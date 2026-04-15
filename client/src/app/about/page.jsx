@@ -906,43 +906,70 @@ function TimelineSection() {
 
 function TeamSection() {
   const ref = useRef(null);
+
   useLayoutEffect(() => {
     if (typeof window === "undefined") return;
+
     const ctx = gsap.context(() => {
-      gsap.from(".about-team-label", {
+      const cards = ref.current?.querySelectorAll(".about-team-member");
+
+      gsap.set(cards, { autoAlpha: 0, y: 18, scale: 0.985 });
+
+      const tl = gsap.timeline({
         scrollTrigger: {
           trigger: ref.current,
           start: "top 82%",
+          once: true,
         },
+        defaults: { ease: "power3.out" },
+      });
+
+      tl.from(".about-team-label", {
         y: 14,
         opacity: 0,
         duration: 0.5,
-        ease: "power3.out",
-      });
-      gsap.from(".about-team-heading", {
-        scrollTrigger: {
-          trigger: ref.current,
-          start: "top 80%",
-        },
-        y: 32,
-        opacity: 0,
-        duration: 0.85,
-        ease: "power3.out",
-        delay: 0.08,
-      });
-      gsap.from(".about-team-member", {
-        scrollTrigger: {
-          trigger: ref.current,
-          start: "top 70%",
-        },
-        y: 28,
-        opacity: 0,
-        duration: 0.8,
-        ease: "power3.out",
-        stagger: 0.1,
-        delay: 0.12,
-      });
+      })
+        .from(
+          ".about-team-heading",
+          {
+            y: 24,
+            opacity: 0,
+            duration: 0.75,
+          },
+          "-=0.2",
+        )
+        .from(
+          ".about-team-divider",
+          {
+            scaleX: 0,
+            transformOrigin: "left center",
+            duration: 0.7,
+          },
+          "-=0.45",
+        )
+        .to(
+          cards,
+          {
+            autoAlpha: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.75,
+            stagger: 0.08,
+            clearProps: "transform",
+          },
+          "-=0.25",
+        )
+        .from(
+          ".about-team-cta",
+          {
+            y: 14,
+            opacity: 0,
+            duration: 0.5,
+          },
+          "-=0.35",
+        );
     }, ref);
+
     return () => ctx.revert();
   }, []);
 
@@ -976,10 +1003,9 @@ function TeamSection() {
       />
 
       <div className="relative mx-auto max-w-6xl px-4 py-20 text-white sm:px-6 md:py-24 lg:px-0 lg:py-28">
-        {/* Heading */}
         <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <div className="about-team-label mb-5 flex items_center gap-3">
+            <div className="about-team-label mb-5 flex items-center gap-3">
               <div
                 className="h-px w-8"
                 style={{
@@ -1013,10 +1039,7 @@ function TeamSection() {
               }}
             >
               Chosen with your{" "}
-              <span
-                className="italic"
-                style={{ color: "oklch(0.88 0.06 320)" }}
-              >
+              <span className="italic" style={{ color: "oklch(0.88 0.06 320)" }}>
                 care in mind.
               </span>
             </h2>
@@ -1030,66 +1053,62 @@ function TeamSection() {
         </div>
 
         <div
-          className="mt-10 h-px"
+          className="about-team-divider mt-10 h-px origin-left"
           style={{
             background:
               "linear-gradient(to right, oklch(1 0 0 / 0.22), oklch(1 0 0 / 0.08), transparent)",
           }}
         />
 
-        {/* Team grid */}
         <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
           {teamMembers.map((m) => (
             <div
               key={m.name}
-              className="about-team-member group relative overflow-hidden rounded-[20px] transition-all duration-500 hover:-translate-y-1"
+              className="about-team-member group relative overflow-hidden rounded-[20px]"
               style={{
-                background: "oklch(0.95 0.03 320 / 0.1)",
-                border: "1px solid oklch(1 0 0 / 0.12)",
+                background: "oklch(0.98 0.01 320 / 0.18)",
+                border: "1px solid oklch(1 0 0 / 0.14)",
                 boxShadow:
-                  "0 2px 4px oklch(0 0 0 / 0.08), 0 8px 24px oklch(0 0 0 / 0.14)",
-                backdropFilter: "blur(12px)",
-                WebkitBackdropFilter: "blur(12px)",
+                  "0 10px 30px oklch(0 0 0 / 0.16), 0 1px 0 oklch(1 0 0 / 0.06) inset",
+                backdropFilter: "blur(14px)",
+                WebkitBackdropFilter: "blur(14px)",
+                minHeight: "100%",
               }}
             >
-              {/* Hover shimmer */}
               <div
                 aria-hidden="true"
-                className="pointer-events-none absolute -right-6 -top-6 h-[120px] w-[120px] rounded-full opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+                className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
                 style={{
                   background:
-                    "radial-gradient(circle, oklch(1 0 0 / 0.06), transparent 70%)",
+                    "linear-gradient(180deg, oklch(1 0 0 / 0.08), transparent 28%, transparent 100%)",
                 }}
               />
-              {/* Photo */}
-              <div
-                className="relative h-[140px] w-full overflow-hidden sm:h-[160px]"
-                style={{ borderRadius: "20px 20px 0 0" }}
-              >
+
+              <div className="relative h-[140px] w-full overflow-hidden sm:h-[160px]">
                 <Image
                   src={m.image}
                   alt={m.name}
                   fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                  className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.04]"
                   sizes="220px"
                 />
                 <div
                   aria-hidden="true"
-                  className="absolute inset-x-0 bottom-0 h-12"
+                  className="absolute inset-x-0 bottom-0 h-14"
                   style={{
                     background:
-                      "linear-gradient(to top, oklch(0.3 0.06 320 / 0.4), transparent)",
+                      "linear-gradient(to top, oklch(0.15 0.03 320 / 0.65), transparent)",
                   }}
                 />
               </div>
-              {/* Text */}
-              <div className="p-3.5">
+
+              <div className="relative p-3.5">
                 <p className="text-[13px] font-semibold leading-tight tracking-[-0.01em] text-white">
                   {m.name}
                 </p>
                 <p
                   className="mt-0.5 text-[10px] font-semibold uppercase tracking-[0.12em]"
-                  style={{ color: "oklch(1 0 0 / 0.5)" }}
+                  style={{ color: "oklch(1 0 0 / 0.7)" }}
                 >
                   {m.role}
                 </p>
@@ -1098,8 +1117,7 @@ function TeamSection() {
           ))}
         </div>
 
-        {/* CTA */}
-        <div className="mt-10 flex justify-center">
+        <div className="about-team-cta mt-10 flex justify-center">
           <Link
             href="/team"
             className="inline-flex items-center gap-2.5 rounded-full px-6 py-2.5 text-[13px] font-semibold transition-all duration-300"
