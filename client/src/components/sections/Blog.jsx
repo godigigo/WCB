@@ -94,7 +94,7 @@ export default function Blog() {
   }, []);
 
   return (
-    <section className="w-full bg-[#C4A8D4]" ref={sectionRef}>
+    <section className="w-full bg-[#e8d8f1]" ref={sectionRef}>
       <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 sm:py-12 md:py-16 lg:px-0 lg:py-20">
         {/* Heading */}
         <div className="blog-heading max-w-xl">
