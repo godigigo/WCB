@@ -72,7 +72,7 @@ export default function Navbar() {
 
           {/* Desktop CTA buttons */}
           <div className="hidden md:flex items-center gap-3">
-            <Button href="/book-appointment" variant="primary">
+            <Button href="/contact" variant="primary">
               Book appointment
             </Button>
             <Button href="/contact" variant="outline">
@@ -164,7 +164,7 @@ export default function Navbar() {
 
           <div className="flex flex-col gap-3 pt-2">
             <Button
-              href="/book-appointment"
+              href="/contact"
               variant="primary"
               className="text-center w-full"
             >
