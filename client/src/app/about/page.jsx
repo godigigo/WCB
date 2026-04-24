@@ -119,11 +119,31 @@ const values = [
 ];
 
 const teamMembers = [
-  { image: "/team/team-2.jpg", name: "Michelle Thompson", role: "Clinical Coordinator" },
-  { image: "/team/team-3.jpg", name: "Dr. Sarah Mitchell", role: "OB/GYN Specialist" },
-  { image: "/team/team-4.jpg", name: "Jennifer Rodriguez", role: "Nurse Practitioner" },
-  { image: "/team/team-5.jpg", name: "Amanda Chen", role: "Physician Assistant" },
-  { image: "/team/team-6.jpg", name: "Lisa Patterson", role: "Medical Assistant" },
+  {
+    image: "/team/team-2.jpg",
+    name: "Michelle Thompson",
+    role: "Clinical Coordinator",
+  },
+  {
+    image: "/team/team-3.jpg",
+    name: "Dr. Sarah Mitchell",
+    role: "OB/GYN Specialist",
+  },
+  {
+    image: "/team/team-4.jpg",
+    name: "Jennifer Rodriguez",
+    role: "Nurse Practitioner",
+  },
+  {
+    image: "/team/team-5.jpg",
+    name: "Amanda Chen",
+    role: "Physician Assistant",
+  },
+  {
+    image: "/team/team-6.jpg",
+    name: "Lisa Patterson",
+    role: "Medical Assistant",
+  },
 ];
 
 const awards = [
@@ -264,7 +284,8 @@ function AboutHero({ sectionRef }) {
                 className="about-hero-heading-line block overflow-hidden"
               >
                 {line.map((word, wi) => {
-                  const isLastWord = li === headingLines.length - 1 && wi === line.length - 1;
+                  const isLastWord =
+                    li === headingLines.length - 1 && wi === line.length - 1;
                   return (
                     <span
                       key={wi}
@@ -302,9 +323,10 @@ function AboutHero({ sectionRef }) {
             className="about-hero-sub mt-7 max-w-[500px] text-[15px] leading-[1.85]"
             style={{ color: "#7A7068" }}
           >
-            Founded in 2018 by Dr. Arunachalam Jothivijayarani, Women&apos;s Care of Bradenton
-            exists to give every woman in our community expert, unhurried, and deeply
-            compassionate care — from preventive wellness to advanced surgical procedures.
+            Founded in 2018 by Dr. Arunachalam Jothivijayarani, Women&apos;s
+            Care of Bradenton exists to give every woman in our community
+            expert, unhurried, and deeply compassionate care — from preventive
+            wellness to advanced surgical procedures.
           </p>
 
           <div className="about-hero-cta mt-9 flex flex-wrap items-center gap-3">
@@ -334,7 +356,9 @@ function AboutHero({ sectionRef }) {
             >
               <p
                 className="font-display text-[2rem] font-bold leading-none tracking-tight text-[#16100D]"
-                style={{ fontFamily: "var(--font-display, 'Playfair Display', serif)" }}
+                style={{
+                  fontFamily: "var(--font-display, 'Playfair Display', serif)",
+                }}
               >
                 {a.value}
               </p>
@@ -396,43 +420,6 @@ function MissionSection() {
         </div>
 
         <div className="grid gap-12 md:grid-cols-2 md:gap-16 md:items-start">
-          {/* Left: big quote */}
-          <div className="mission-item">
-            <h2
-              className="font-display leading-[1.1] tracking-[-0.025em] text-[#16100D]"
-              style={{
-                fontFamily: "var(--font-display, 'Playfair Display', serif)",
-                fontSize: "clamp(1.7rem, 3.2vw, 2.5rem)",
-              }}
-            >
-              &quot;To provide compassionate, comprehensive personal care to women of{" "}
-              <span
-                className="italic"
-                style={{ color: "oklch(0.44 0.13 322)" }}
-              >
-                all ages.
-              </span>
-              &quot;
-            </h2>
-            <div
-              className="mt-6 h-px max-w-[340px]"
-              style={{
-                background:
-                  "linear-gradient(to right, oklch(0.65 0.1 320 / 0.3), transparent)",
-              }}
-            />
-            <p
-              className="mt-6 text-[14.5px] leading-[1.88]"
-              style={{ color: "#7A7068" }}
-            >
-              We practice excellent quality medicine with focused attention to every aspect of a
-              woman&apos;s wellbeing — committed to making your experience with us truly
-              exceptional. From the moment you enter our office, you will feel the warmth and
-              genuine care we deliver.
-            </p>
-          </div>
-
-          {/* Right: values grid */}
           <div className="grid gap-4 sm:grid-cols-2">
             {values.map((v, i) => (
               <div
@@ -468,6 +455,45 @@ function MissionSection() {
               </div>
             ))}
           </div>
+          {/* Left: big quote */}
+          <div className="mission-item">
+            <h2
+              className="font-display leading-[1.1] tracking-[-0.025em] text-[#16100D]"
+              style={{
+                fontFamily: "var(--font-display, 'Playfair Display', serif)",
+                fontSize: "clamp(1.7rem, 3.2vw, 2.5rem)",
+              }}
+            >
+              &quot;To provide compassionate, comprehensive personal care to
+              women of{" "}
+              <span
+                className="italic"
+                style={{ color: "oklch(0.44 0.13 322)" }}
+              >
+                all ages.
+              </span>
+              &quot;
+            </h2>
+            <div
+              className="mt-6 h-px max-w-[340px]"
+              style={{
+                background:
+                  "linear-gradient(to right, oklch(0.65 0.1 320 / 0.3), transparent)",
+              }}
+            />
+            <p
+              className="mt-6 text-[14.5px] leading-[1.88]"
+              style={{ color: "#7A7068" }}
+            >
+              We practice excellent quality medicine with focused attention to
+              every aspect of a woman&apos;s wellbeing — committed to making
+              your experience with us truly exceptional. From the moment you
+              enter our office, you will feel the warmth and genuine care we
+              deliver.
+            </p>
+          </div>
+
+          {/* Right: values grid */}
         </div>
       </div>
     </section>
@@ -648,20 +674,23 @@ function FounderSection() {
               className="text-[14.5px] leading-[1.88]"
               style={{ color: "#7A7068" }}
             >
-              Dr. Jothi attended the University of Iowa Medical School, where she earned double
-              board certifications in Family Practice and Obstetrics and Gynecology. Her residency
-              concentrated on high-risk obstetrics, infertility, and gynecologic procedures — during
-              which she won the prestigious <em>&quot;Above and Beyond&quot;</em> award for
-              outstanding patient care.
+              Dr. Jothi attended the University of Iowa Medical School, where
+              she earned double board certifications in Family Practice and
+              Obstetrics and Gynecology. Her residency concentrated on high-risk
+              obstetrics, infertility, and gynecologic procedures — during which
+              she won the prestigious <em>&quot;Above and Beyond&quot;</em>{" "}
+              award for outstanding patient care.
             </p>
             <p
               className="text-[14.5px] leading-[1.88]"
               style={{ color: "#7A7068" }}
             >
-              She is one of the most highly rated Robotic Surgeons in the Bradenton/Sarasota area,
-              specializing in advanced laparoscopic surgeries, hysterectomies, and treatment of
-              fibroids, pelvic pain, endometriosis, and ovarian masses. She also speaks Hindi and
-              holds certifications from the International Society of Cosmetogynecology.
+              She is one of the most highly rated Robotic Surgeons in the
+              Bradenton/Sarasota area, specializing in advanced laparoscopic
+              surgeries, hysterectomies, and treatment of fibroids, pelvic pain,
+              endometriosis, and ovarian masses. She also speaks Hindi and holds
+              certifications from the International Society of
+              Cosmetogynecology.
             </p>
 
             {/* Credentials grid */}
@@ -672,7 +701,10 @@ function FounderSection() {
                 { label: "Top Doctors Award — Sarasota (since 2008)" },
                 { label: "Doctor of the Year — Blake Medical Center, 2017" },
                 { label: "Member, American College of OB/GYN" },
-                { label: "Hospital privileges at 5 Bradenton/Sarasota facilities" },
+                {
+                  label:
+                    "Hospital privileges at 5 Bradenton/Sarasota facilities",
+                },
               ].map((c, i) => (
                 <div
                   key={i}
@@ -807,10 +839,7 @@ function TimelineSection() {
             }}
           >
             Three decades of{" "}
-            <span
-              className="italic"
-              style={{ color: "oklch(0.44 0.1 55)" }}
-            >
+            <span className="italic" style={{ color: "oklch(0.44 0.1 55)" }}>
               dedicated care.
             </span>
           </h2>
@@ -864,7 +893,8 @@ function TimelineSection() {
                     <h3
                       className="mt-3 font-display text-[16px] font-semibold leading-snug tracking-[-0.01em] text-[#16100D]"
                       style={{
-                        fontFamily: "var(--font-display, 'Playfair Display', serif)",
+                        fontFamily:
+                          "var(--font-display, 'Playfair Display', serif)",
                       }}
                     >
                       {m.title}
@@ -1039,7 +1069,10 @@ function TeamSection() {
               }}
             >
               Chosen with your{" "}
-              <span className="italic" style={{ color: "oklch(0.88 0.06 320)" }}>
+              <span
+                className="italic"
+                style={{ color: "oklch(0.88 0.06 320)" }}
+              >
                 care in mind.
               </span>
             </h2>
@@ -1048,7 +1081,8 @@ function TeamSection() {
             className="max-w-[240px] text-[14px] leading-[1.8] sm:text-right"
             style={{ color: "oklch(1 0 0 / 0.58)" }}
           >
-            Every team member was carefully selected for their clinical excellence and warmth.
+            Every team member was carefully selected for their clinical
+            excellence and warmth.
           </p>
         </div>
 
@@ -1141,7 +1175,11 @@ function TeamSection() {
               stroke="currentColor"
               strokeWidth="2.5"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 18l6-6-6-6" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 18l6-6-6-6"
+              />
             </svg>
           </Link>
         </div>
@@ -1383,10 +1421,7 @@ function CTASection() {
           }}
         >
           Ready to take charge of your{" "}
-          <span
-            className="italic"
-            style={{ color: "oklch(0.44 0.13 322)" }}
-          >
+          <span className="italic" style={{ color: "oklch(0.44 0.13 322)" }}>
             health?
           </span>
         </h2>
@@ -1395,8 +1430,8 @@ function CTASection() {
           className="max-w-[480px] text-[15px] leading-[1.85]"
           style={{ color: "#7A7068" }}
         >
-          Schedule an appointment today and experience expert, compassionate women&apos;s
-          healthcare in Bradenton, FL.
+          Schedule an appointment today and experience expert, compassionate
+          women&apos;s healthcare in Bradenton, FL.
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-3">
