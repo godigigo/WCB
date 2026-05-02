@@ -136,7 +136,7 @@ function Hero() {
               sizes="(min-width:768px) 50vw,100vw" className="object-cover" />
             <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-44"
               style={{ background: "linear-gradient(to top,oklch(0.18 0.04 320 / 0.6),transparent)" }} />
-            <div className="gh-float absolute -bottom-5 -left-4 flex items-center gap-3 rounded-2xl px-4 py-3 sm:-bottom-6 sm:-left-6 sm:px-5 sm:py-4"
+            {/* <div className="gh-float absolute -bottom-5 -left-4 flex items-center gap-3 rounded-2xl px-4 py-3 sm:-bottom-6 sm:-left-6 sm:px-5 sm:py-4"
               style={{ background: "rgba(255,255,255,0.95)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", border: "1px solid oklch(0.92 0.02 80 / 0.88)", boxShadow: "0 6px 28px oklch(0.2 0.02 60 / 0.14)" }}>
               <span className="flex h-10 w-10 items-center justify-center rounded-full text-[17px] font-bold"
                 style={{ background: "oklch(0.9 0.05 340 / 0.55)", color: "oklch(0.42 0.12 320)" }}>✦</span>
@@ -145,7 +145,7 @@ function Hero() {
                   style={{ fontFamily: "var(--font-display,'Playfair Display',serif)" }}>Outpatient</p>
                 <p className="mt-0.5 text-[10px] uppercase tracking-[0.2em]" style={{ color: "#9A9490" }}>Same-day surgical center</p>
               </div>
-            </div>
+            </div> */}
           </div>
           <div aria-hidden="true" className="absolute -right-2 top-9 h-5 w-5 rounded-full sm:-right-4 sm:top-12 sm:h-6 sm:w-6"
             style={{ background: "oklch(0.72 0.1 320 / 0.65)" }} />

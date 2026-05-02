@@ -6,20 +6,19 @@ import Link from "next/link";
 import Button from "@/components/ui/Button";
 
 const services = [
-  { label: "Gynecology",               href: "/services/gynecology" },
-  { label: "Well-Woman Exams",         href: "/services/well-woman-exams" },
-  { label: "Minimally Invasive Surgery", href: "/services/minimally-invasive-surgery" },
-  { label: "Infertility",              href: "/services/infertility" },
-  { label: "MedSpa",                   href: "/services/medspa" },
+  { label: "Gynecology",                href: "/services/gynecology",                external: false },
+  { label: "Well-Woman Exams",          href: "/services/well-woman-exams",          external: false },
+  { label: "Minimally Invasive Surgery",href: "/services/minimally-invasive-surgery",external: false },
+  { label: "Infertility",               href: "/services/infertility",               external: false },
+  { label: "MedSpa",                    href: "https://www.spabradenton.com/",        external: true  },
 ];
 
 export default function Navbar() {
-  const [mobileOpen, setMobileOpen]         = useState(false);
-  const [servicesOpen, setServicesOpen]     = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false);
   const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(e) {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -34,7 +33,6 @@ export default function Navbar() {
     <header className="sticky top-0 z-50">
       <div className="bg-purple-faint/80 backdrop-blur-md border-b border-white/30 shadow-sm">
         <nav className="flex w-full items-center justify-between px-6 py-3 md:px-8">
-
           {/* LEFT: logo + links */}
           <div className="flex items-center gap-10">
             <Link href="/">
@@ -108,28 +106,62 @@ export default function Navbar() {
                   <ul className="flex flex-col py-2" role="none">
                     {services.map((s, i) => (
                       <li key={s.href} role="none">
-                        <Link
-                          href={s.href}
-                          role="menuitem"
-                          onClick={() => setServicesOpen(false)}
-                          className="group flex items-center justify-between px-4 py-2.5 text-[14px] font-medium transition-colors duration-150 hover:bg-[oklch(0.94_0.03_320_/_0.4)]"
-                          style={{ color: "#3A2F2B" }}
-                        >
-                          <span className="transition-transform duration-150 group-hover:translate-x-0.5">
-                            {s.label}
-                          </span>
-                          <svg
-                            className="h-3.5 w-3.5 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2.5"
-                            style={{ color: "oklch(0.48 0.13 322)" }}
+                        {s.external ? (
+                          <a
+                            href={s.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            role="menuitem"
+                            onClick={() => setServicesOpen(false)}
+                            className="group flex items-center justify-between px-4 py-2.5 text-[14px] font-medium transition-colors duration-150 hover:bg-[oklch(0.94_0.03_320_/_0.4)]"
+                            style={{ color: "#3A2F2B" }}
                           >
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 18l6-6-6-6" />
-                          </svg>
-                        </Link>
-                        {/* Divider between items (not after last) */}
+                            <span className="transition-transform duration-150 group-hover:translate-x-0.5">
+                              {s.label}
+                            </span>
+                            {/* External link icon instead of chevron */}
+                            <svg
+                              className="h-3.5 w-3.5 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2.5"
+                              style={{ color: "oklch(0.48 0.13 322)" }}
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6m0 0v6m0-6L10 14"
+                              />
+                            </svg>
+                          </a>
+                        ) : (
+                          <Link
+                            href={s.href}
+                            role="menuitem"
+                            onClick={() => setServicesOpen(false)}
+                            className="group flex items-center justify-between px-4 py-2.5 text-[14px] font-medium transition-colors duration-150 hover:bg-[oklch(0.94_0.03_320_/_0.4)]"
+                            style={{ color: "#3A2F2B" }}
+                          >
+                            <span className="transition-transform duration-150 group-hover:translate-x-0.5">
+                              {s.label}
+                            </span>
+                            <svg
+                              className="h-3.5 w-3.5 opacity-0 transition-opacity duration-150 group-hover:opacity-100"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2.5"
+                              style={{ color: "oklch(0.48 0.13 322)" }}
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M9 18l6-6-6-6"
+                              />
+                            </svg>
+                          </Link>
+                        )}
                         {i < services.length - 1 && (
                           <div
                             className="mx-4 h-px"
@@ -145,12 +177,17 @@ export default function Navbar() {
                     className="mx-3 mb-2 mt-0.5 rounded-xl px-3 py-2.5"
                     style={{ background: "oklch(0.94 0.04 320 / 0.35)" }}
                   >
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.16em]"
-                      style={{ color: "oklch(0.44 0.1 320)" }}>
+                    <p
+                      className="text-[11px] font-semibold uppercase tracking-[0.16em]"
+                      style={{ color: "oklch(0.44 0.1 320)" }}
+                    >
                       Bradenton, FL
                     </p>
-                    <p className="text-[11.5px] leading-snug" style={{ color: "#8A7F7B" }}>
-                      Board-certified women's healthcare
+                    <p
+                      className="text-[11.5px] leading-snug"
+                      style={{ color: "#8A7F7B" }}
+                    >
+                      Board-certified women&apos;s healthcare
                     </p>
                   </div>
                 </div>
@@ -159,6 +196,11 @@ export default function Navbar() {
               <li>
                 <Link href="/about" className="hover:text-primary transition-colors">
                   About
+                </Link>
+              </li>
+              <li>
+                <Link href="/team" className="hover:text-primary transition-colors">
+                  Team
                 </Link>
               </li>
               <li>
@@ -185,8 +227,12 @@ export default function Navbar() {
 
           {/* Desktop CTAs */}
           <div className="hidden md:flex items-center gap-3">
-            <Button href="/contact" variant="primary">Book appointment</Button>
-            <Button href="/contact" variant="outline">Call us</Button>
+            <Button href="/contact" variant="primary">
+              Book appointment
+            </Button>
+            <Button href="/contact" variant="outline">
+              Call us
+            </Button>
           </div>
 
           {/* Mobile hamburger */}
@@ -250,14 +296,48 @@ export default function Navbar() {
                 >
                   {services.map((s, i) => (
                     <li key={s.href}>
-                      <Link
-                        href={s.href}
-                        onClick={() => { setMobileOpen(false); setMobileServicesOpen(false); }}
-                        className="block px-4 py-2.5 text-[14px] font-medium transition-colors hover:bg-[oklch(0.94_0.03_320_/_0.4)]"
-                        style={{ color: "#3A2F2B" }}
-                      >
-                        {s.label}
-                      </Link>
+                      {s.external ? (
+                        <a
+                          href={s.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={() => {
+                            setMobileOpen(false);
+                            setMobileServicesOpen(false);
+                          }}
+                          className="flex items-center justify-between px-4 py-2.5 text-[14px] font-medium transition-colors hover:bg-[oklch(0.94_0.03_320_/_0.4)]"
+                          style={{ color: "#3A2F2B" }}
+                        >
+                          {s.label}
+                          {/* External link icon */}
+                          <svg
+                            className="h-3.5 w-3.5 opacity-50"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2.5"
+                            style={{ color: "oklch(0.48 0.13 322)" }}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6m0 0v6m0-6L10 14"
+                            />
+                          </svg>
+                        </a>
+                      ) : (
+                        <Link
+                          href={s.href}
+                          onClick={() => {
+                            setMobileOpen(false);
+                            setMobileServicesOpen(false);
+                          }}
+                          className="block px-4 py-2.5 text-[14px] font-medium transition-colors hover:bg-[oklch(0.94_0.03_320_/_0.4)]"
+                          style={{ color: "#3A2F2B" }}
+                        >
+                          {s.label}
+                        </Link>
+                      )}
                       {i < services.length - 1 && (
                         <div className="mx-4 h-px" style={{ background: "oklch(0.88 0.03 320 / 0.25)" }} />
                       )}
@@ -280,8 +360,12 @@ export default function Navbar() {
           </ul>
 
           <div className="flex flex-col gap-3 pt-2">
-            <Button href="/contact" variant="primary" className="text-center w-full">Book appointment</Button>
-            <Button href="/contact" variant="outline" className="text-center w-full">Call us</Button>
+            <Button href="/contact" variant="primary" className="text-center w-full">
+              Book appointment
+            </Button>
+            <Button href="/contact" variant="outline" className="text-center w-full">
+              Call us
+            </Button>
           </div>
         </div>
       )}
