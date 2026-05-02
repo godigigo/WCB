@@ -85,7 +85,7 @@ export default function ContactCTA() {
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
               <Button
                 variant="primary"
-                href="/book-appointment"
+                href="/contact"
                 className="cta-btn w-full sm:w-auto"
               >
                 Book appointment

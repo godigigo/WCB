@@ -7,57 +7,39 @@ import TeamCard from "@/components/ui/TeamCard";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const teamLeftColumn = [
-  {
-    variant: "large",
-    image: "/team/team-1.jpg",
-    name: "Dr. Jothivijayarani",
-    role: "Founder and lead physician",
-    description:
-      "Thirty years of women's healthcare with board certifications in family practice and gynecology.",
-  },
+const featuredMember = {
+  variant: "large",
+  image: "/team/team-1.jpg",
+  name: "Dr. Arunachalam Jothivijayarani",
+  role: "Founder & Lead Physician",
+  description:
+    "Dr. Jothivijayarani is the founder of Womens Care of Bradenton. Board-certified in Family Practice and Gynecology, she has been serving women in Bradenton for over thirty years with compassionate, comprehensive care.",
+};
+
+const supportingMembers = [
   {
     variant: "small",
     image: "/team/team-2.jpg",
-    name: "Michelle Thompson",
-    role: "Clinical coordinator",
+    name: "Katelin Schulte, APRN",
+    role: "Advanced Practice Registered Nurse",
     description:
-      "Ensures smooth patient experiences and manages scheduling with professionalism and warmth.",
+      "A compassionate family nurse practitioner with comprehensive OB/GYN experience. Graduate of the University of St. Francis, Elgin, Illinois.",
   },
   {
     variant: "small",
     image: "/team/team-3.jpg",
-    name: "Dr. Sarah Mitchell",
-    role: "OB/GYN specialist",
+    name: "Gail Shafran MSN FNP-BC, NP",
+    role: "Nurse Practitioner",
     description:
-      "Specializes in minimally invasive procedures and reproductive health with compassionate patient care.",
+      "Board-certified nurse practitioner and graduate of Brandman University, specializing in outpatient and primary care.",
   },
-];
-
-const teamRightColumn = [
   {
     variant: "small",
     image: "/team/team-4.jpg",
-    name: "Jennifer Rodriguez",
-    role: "Nurse practitioner",
+    name: "Kandyce Lopez, PA",
+    role: "Physician Assistant",
     description:
-      "Provides comprehensive women's health services with a focus on preventive care and education.",
-  },
-  {
-    variant: "small",
-    image: "/team/team-5.jpg",
-    name: "Amanda Chen",
-    role: "Physician assistant",
-    description:
-      "Delivers personalized care in gynecology and well woman exams with attention to detail.",
-  },
-  {
-    variant: "large",
-    image: "/team/team-6.jpg",
-    name: "Lisa Patterson",
-    role: "Medical assistant",
-    description:
-      "Supports clinical operations and patient comfort with genuine care and efficiency.",
+      "Certified physician assistant from Nova Southeastern University specializing in ambulatory care and reproductive health.",
   },
 ];
 
@@ -76,38 +58,23 @@ export default function Team() {
 
       gsap.from(".team-label", {
         scrollTrigger: { trigger: sectionRef.current, start: "top 82%" },
-        y: 14,
-        opacity: 0,
-        duration: 0.5,
-        ease: "power3.out",
+        y: 14, opacity: 0, duration: 0.5, ease: "power3.out",
       });
 
       gsap.from(".team-heading", {
         scrollTrigger: { trigger: sectionRef.current, start: "top 80%" },
-        y: 36,
-        opacity: 0,
-        duration: 0.9,
-        ease: "power3.out",
-        delay: 0.08,
+        y: 36, opacity: 0, duration: 0.9, ease: "power3.out", delay: 0.08,
       });
 
       gsap.from(".team-subtext", {
         scrollTrigger: { trigger: sectionRef.current, start: "top 80%" },
-        y: 20,
-        opacity: 0,
-        duration: 0.7,
-        ease: "power3.out",
-        delay: 0.16,
+        y: 20, opacity: 0, duration: 0.7, ease: "power3.out", delay: 0.16,
       });
 
       gsap.from(".team-card", {
         scrollTrigger: { trigger: sectionRef.current, start: "top 70%" },
-        y: 32,
-        opacity: 0,
-        duration: 0.85,
-        ease: "power3.out",
-        stagger: 0.11,
-        delay: 0.1,
+        y: 32, opacity: 0, duration: 0.85, ease: "power3.out",
+        stagger: 0.11, delay: 0.1,
       });
     }, sectionRef);
 
@@ -120,8 +87,6 @@ export default function Team() {
       ref={sectionRef}
     >
       {/* ── Background texture layers ───────────────── */}
-
-      {/* Fine grain on primary color */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"
@@ -131,8 +96,6 @@ export default function Team() {
           backgroundSize: "200px 200px",
         }}
       />
-
-      {/* Hairline dot grid — white on primary */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"
@@ -142,8 +105,6 @@ export default function Team() {
           backgroundSize: "28px 28px",
         }}
       />
-
-      {/* Soft light orb — top right */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -right-40 -top-40 h-[640px] w-[640px] rounded-full"
@@ -152,8 +113,6 @@ export default function Team() {
             "radial-gradient(circle at 35% 35%, oklch(1 0 0 / 0.07) 0%, transparent 60%)",
         }}
       />
-
-      {/* Darker depth — bottom left */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -bottom-32 -left-32 h-[500px] w-[500px] rounded-full"
@@ -162,31 +121,15 @@ export default function Team() {
             "radial-gradient(circle at 55% 55%, oklch(0.2 0.08 320 / 0.25) 0%, transparent 65%)",
         }}
       />
-
-      {/* Hairline decorative ring — mid left (desktop) */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute hidden lg:block"
-        style={{
-          top: "20%",
-          left: "-60px",
-          width: "260px",
-          height: "260px",
-          borderRadius: "50%",
-          border: "1px solid oklch(1 0 0 / 0.08)",
-        }}
+        style={{ top: "20%", left: "-60px", width: "260px", height: "260px", borderRadius: "50%", border: "1px solid oklch(1 0 0 / 0.08)" }}
       />
       <div
         aria-hidden="true"
         className="pointer-events-none absolute hidden lg:block"
-        style={{
-          top: "calc(20% + 20px)",
-          left: "-40px",
-          width: "220px",
-          height: "220px",
-          borderRadius: "50%",
-          border: "1px solid oklch(1 0 0 / 0.05)",
-        }}
+        style={{ top: "calc(20% + 20px)", left: "-40px", width: "220px", height: "220px", borderRadius: "50%", border: "1px solid oklch(1 0 0 / 0.05)" }}
       />
 
       {/* ── Content ─────────────────────────────────── */}
@@ -194,35 +137,16 @@ export default function Team() {
 
         {/* ── Heading block ───────────────────────── */}
         <header className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-
-          {/* Left: label + heading */}
           <div className="max-w-xl">
-            {/* Eyebrow pill */}
             <div className="team-label mb-5 flex items-center gap-3">
-              <div
-                className="h-px w-8"
-                style={{
-                  background:
-                    "linear-gradient(to left, oklch(1 0 0 / 0.4), transparent)",
-                }}
-              />
+              <div className="h-px w-8" style={{ background: "linear-gradient(to left, oklch(1 0 0 / 0.4), transparent)" }} />
               <span
                 className="inline-flex items-center rounded-full px-3 py-1 text-[10.5px] font-semibold uppercase tracking-[0.22em]"
-                style={{
-                  color: "oklch(0.95 0.02 320)",
-                  background: "oklch(1 0 0 / 0.1)",
-                  border: "1px solid oklch(1 0 0 / 0.16)",
-                }}
+                style={{ color: "oklch(0.95 0.02 320)", background: "oklch(1 0 0 / 0.1)", border: "1px solid oklch(1 0 0 / 0.16)" }}
               >
                 Our Team
               </span>
-              <div
-                className="h-px w-8"
-                style={{
-                  background:
-                    "linear-gradient(to right, oklch(1 0 0 / 0.4), transparent)",
-                }}
-              />
+              <div className="h-px w-8" style={{ background: "linear-gradient(to right, oklch(1 0 0 / 0.4), transparent)" }} />
             </div>
 
             <h2
@@ -230,16 +154,12 @@ export default function Team() {
               style={{ fontSize: "clamp(2rem, 4vw, 3rem)" }}
             >
               Meet our{" "}
-              <span
-                className="italic"
-                style={{ color: "oklch(0.88 0.06 320)" }}
-              >
+              <span className="italic" style={{ color: "oklch(0.88 0.06 320)" }}>
                 Experts.
               </span>
             </h2>
           </div>
 
-          {/* Right: subtext */}
           <p
             className="team-subtext max-w-[240px] text-[14px] leading-[1.8] sm:text-right"
             style={{ color: "oklch(1 0 0 / 0.6)" }}
@@ -251,31 +171,43 @@ export default function Team() {
         {/* ── Divider ──────────────────────────────── */}
         <div
           className="mt-10 h-px"
-          style={{
-            background:
-              "linear-gradient(to right, oklch(1 0 0 / 0.22), oklch(1 0 0 / 0.08), transparent)",
-          }}
+          style={{ background: "linear-gradient(to right, oklch(1 0 0 / 0.22), oklch(1 0 0 / 0.08), transparent)" }}
         />
 
-        {/* ── Bento grid (unchanged structure) ─────── */}
-        <div className="mt-10 grid gap-5 md:grid-cols-2 md:items-start lg:gap-6">
+        {/*
+          ── Bento grid ────────────────────────────────
+          Desktop (md+):
+          ┌──────────────┬─────────────┬─────────────┐  ← row 1
+          │              │  Katelin    │    Gail      │
+          │  Dr. Jothi   ├─────────────┴─────────────┤  ← row 2
+          │  (row-span-2)│       Kandyce Lopez        │
+          └──────────────┴────────────────────────────┘
 
-          {/* LEFT column */}
-          <div className="flex flex-col gap-5 lg:gap-6">
-            {teamLeftColumn.map((member) => (
-              <div key={member.name} className="team-card">
-                <TeamCard {...member} />
-              </div>
-            ))}
+          Both rows have equal height via grid-rows.
+          All cells use h-full so cards stretch to fill.
+        */}
+        <div
+          className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3 md:grid-rows-2 lg:gap-5"
+          style={{ gridTemplateRows: "1fr 1fr" }}
+        >
+          {/* Featured — spans both rows on the left */}
+          <div className="team-card md:row-span-2 md:flex md:flex-col">
+            <TeamCard {...featuredMember} />
           </div>
 
-          {/* RIGHT column */}
-          <div className="flex flex-col gap-5 lg:gap-6">
-            {teamRightColumn.map((member) => (
-              <div key={member.name} className="team-card">
-                <TeamCard {...member} />
-              </div>
-            ))}
+          {/* Small card 1 — top-center */}
+          <div className="team-card flex flex-col">
+            <TeamCard {...supportingMembers[0]} />
+          </div>
+
+          {/* Small card 2 — top-right */}
+          <div className="team-card flex flex-col">
+            <TeamCard {...supportingMembers[1]} />
+          </div>
+
+          {/* Small card 3 — bottom, spans 2 cols */}
+          <div className="team-card md:col-span-2 flex flex-col">
+            <TeamCard {...supportingMembers[2]} />
           </div>
         </div>
       </div>

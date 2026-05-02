@@ -6,6 +6,7 @@ import Testimonials from '@/components/sections/Testimonials'
 import Blog from '@/components/sections/Blog'
 import ContactCTA from '@/components/sections/ContactCTA'
 import Team from '@/components/sections/Team'
+import FacebookFeed from '@/components/sections/FacebookFeed'
 
 const page = () => {
   return (
@@ -15,6 +16,7 @@ const page = () => {
       <About />
       <Team />
       <Testimonials/>
+      <FacebookFeed/>
       <Blog/>
       <ContactCTA/>
     </div>

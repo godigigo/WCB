@@ -14,7 +14,7 @@ export default function TeamCard({
   if (isLarge) {
     return (
       <div
-        className="group relative overflow-hidden rounded-[28px] p-4 transition-all duration-500 hover:-translate-y-1 sm:p-5 md:p-6"
+        className="group relative flex h-full flex-col overflow-hidden rounded-[28px] transition-all duration-500 hover:-translate-y-1"
         style={{
           background: "oklch(0.95 0.03 320 / 0.55)",
           border: "1px solid oklch(0.82 0.05 320 / 0.2)",
@@ -35,7 +35,7 @@ export default function TeamCard({
           }}
         />
 
-        {/* Top-right shimmer */}
+        {/* Hover shimmer */}
         <div
           aria-hidden="true"
           className="pointer-events-none absolute -right-10 -top-10 h-[200px] w-[200px] rounded-full opacity-0 transition-opacity duration-500 group-hover:opacity-100"
@@ -45,88 +45,80 @@ export default function TeamCard({
           }}
         />
 
-        <div className="relative flex flex-col gap-4 sm:gap-5">
-          {/* Image */}
+        {/* Image — grows to fill available space */}
+        <div className="relative min-h-[320px] flex-1 overflow-hidden">
+          <Image
+            src={image}
+            alt={name}
+            fill
+            sizes="(min-width: 1024px) 420px, (min-width: 768px) 50vw, 100vw"
+            className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+          />
+          {/* Bottom vignette */}
           <div
-            className="relative h-[260px] w-full overflow-hidden sm:h-[300px] md:h-[320px]"
-            style={{ borderRadius: "1.25rem" }}
-          >
-            <Image
-              src={image}
-              alt={name}
-              fill
-              sizes="(min-width: 1024px) 480px, (min-width: 768px) 50vw, 100vw"
-              className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-            />
-            {/* Bottom vignette */}
-            <div
-              aria-hidden="true"
-              className="absolute inset-x-0 bottom-0 h-24"
+            aria-hidden="true"
+            className="absolute inset-x-0 bottom-0 h-28"
+            style={{
+              background:
+                "linear-gradient(to top, oklch(0.4 0.08 320 / 0.45), transparent)",
+            }}
+          />
+          {/* Role pill */}
+          <div className="absolute bottom-3 left-3">
+            <span
+              className="inline-flex items-center rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em]"
               style={{
-                background:
-                  "linear-gradient(to top, oklch(0.4 0.08 320 / 0.35), transparent)",
+                background: "rgba(255,255,255,0.88)",
+                backdropFilter: "blur(8px)",
+                WebkitBackdropFilter: "blur(8px)",
+                color: "oklch(0.42 0.12 320)",
+                border: "1px solid oklch(0.84 0.05 320 / 0.25)",
               }}
-            />
-            {/* Role pill floating on image */}
-            <div className="absolute bottom-3 left-3">
-              <span
-                className="inline-flex items-center rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em]"
-                style={{
-                  background: "rgba(255,255,255,0.88)",
-                  backdropFilter: "blur(8px)",
-                  WebkitBackdropFilter: "blur(8px)",
-                  color: "oklch(0.42 0.12 320)",
-                  border: "1px solid oklch(0.84 0.05 320 / 0.25)",
-                }}
-              >
-                {role}
-              </span>
-            </div>
+            >
+              {role}
+            </span>
           </div>
+        </div>
 
-          {/* Text */}
-          <div className="px-1">
-            <h3
-              className="font-display leading-tight tracking-[-0.015em] text-foreground transition-colors duration-300 group-hover:text-primary"
-              style={{ fontSize: "clamp(1.1rem, 2vw, 1.3rem)" }}
-            >
-              {name}
-            </h3>
+        {/* Text — fixed bottom section, no padding waste */}
+        <div className="flex shrink-0 flex-col gap-2 p-5">
+          <h3
+            className="font-display leading-tight tracking-[-0.015em] text-foreground transition-colors duration-300 group-hover:text-primary"
+            style={{ fontSize: "clamp(1.1rem, 2vw, 1.3rem)" }}
+          >
+            {name}
+          </h3>
 
-            {/* Gradient divider */}
-            <div
-              className="my-3 h-px"
-              style={{
-                background:
-                  "linear-gradient(to right, oklch(0.65 0.1 320 / 0.3), transparent)",
-              }}
-            />
+          <div
+            className="h-px"
+            style={{
+              background:
+                "linear-gradient(to right, oklch(0.65 0.1 320 / 0.3), transparent)",
+            }}
+          />
 
-            <p
-              className="text-[13.5px] leading-[1.82]"
-              style={{ color: "oklch(0.35 0.04 320 / 0.75)" }}
-            >
-              {description}
-            </p>
+          <p
+            className="text-[13px] leading-[1.75]"
+            style={{ color: "oklch(0.35 0.04 320 / 0.75)" }}
+          >
+            {description}
+          </p>
 
-            {/* Animated dot row */}
-            <div className="mt-4 flex items-center gap-2">
-              {[0, 1, 2].map((i) => (
-                <span
-                  key={i}
-                  className="block rounded-full transition-all duration-300"
-                  style={{
-                    width: i === 0 ? "20px" : "6px",
-                    height: "6px",
-                    background:
-                      i === 0
-                        ? "oklch(0.55 0.12 320 / 0.6)"
-                        : "oklch(0.65 0.08 320 / 0.3)",
-                    transitionDelay: `${i * 40}ms`,
-                  }}
-                />
-              ))}
-            </div>
+          <div className="mt-1 flex items-center gap-2">
+            {[0, 1, 2].map((i) => (
+              <span
+                key={i}
+                className="block rounded-full"
+                style={{
+                  width: i === 0 ? "20px" : "6px",
+                  height: "6px",
+                  background:
+                    i === 0
+                      ? "oklch(0.55 0.12 320 / 0.6)"
+                      : "oklch(0.65 0.08 320 / 0.3)",
+                }}
+              />
+            ))}
           </div>
         </div>
       </div>
@@ -136,7 +128,7 @@ export default function TeamCard({
   // ── Small card ──────────────────────────────────
   return (
     <div
-      className="group relative overflow-hidden rounded-[24px] p-4 transition-all duration-500 hover:-translate-y-0.5 sm:p-5"
+      className="group relative flex h-full flex-col overflow-hidden rounded-[24px] p-4 transition-all duration-500 hover:-translate-y-0.5 sm:p-5"
       style={{
         background: "oklch(0.95 0.03 320 / 0.55)",
         border: "1px solid oklch(0.82 0.05 320 / 0.2)",
@@ -167,90 +159,89 @@ export default function TeamCard({
         }}
       />
 
-      <div className="relative flex gap-4 sm:gap-5">
-        {/* Avatar */}
-        <div
-          className="relative h-[88px] w-[88px] shrink-0 overflow-hidden transition-transform duration-500 group-hover:scale-[1.03] sm:h-[108px] sm:w-[108px]"
-          style={{
-            borderRadius: "1rem",
-            boxShadow: "0 4px 14px oklch(0.3 0.08 320 / 0.12)",
-          }}
-        >
-          <Image
-            src={image}
-            alt={name}
-            fill
-            sizes="110px"
-            className="object-cover"
-          />
-          {/* Bottom shimmer on avatar */}
+      <div className="relative flex h-full flex-col gap-4">
+        {/* Top row: avatar + name/role */}
+        <div className="flex gap-4">
+          {/* Avatar */}
           <div
-            aria-hidden="true"
-            className="absolute inset-x-0 bottom-0 h-10"
+            className="relative h-[80px] w-[80px] shrink-0 overflow-hidden sm:h-[92px] sm:w-[92px]"
             style={{
-              background:
-                "linear-gradient(to top, oklch(0.4 0.08 320 / 0.28), transparent)",
+              borderRadius: "0.875rem",
+              boxShadow: "0 4px 14px oklch(0.3 0.08 320 / 0.12)",
             }}
-          />
-        </div>
+          >
+            <Image
+              src={image}
+              alt={name}
+              fill
+              sizes="92px"
+              className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+            />
+            <div
+              aria-hidden="true"
+              className="absolute inset-x-0 bottom-0 h-8"
+              style={{
+                background:
+                  "linear-gradient(to top, oklch(0.4 0.08 320 / 0.28), transparent)",
+              }}
+            />
+          </div>
 
-        {/* Text */}
-        <div className="flex flex-1 flex-col justify-between">
-          <div>
+          {/* Name + role */}
+          <div className="flex flex-col justify-center gap-1">
             <h3
-              className="font-display text-[15px] leading-tight tracking-[-0.012em] text-foreground transition-colors duration-300 group-hover:text-primary sm:text-[16px]"
+              className="font-display text-[15px] leading-snug tracking-[-0.012em] text-foreground transition-colors duration-300 group-hover:text-primary sm:text-[16px]"
             >
               {name}
             </h3>
-
-            {/* Role with leading dot */}
-            <div className="mt-1.5 flex items-center gap-1.5">
+            <div className="flex items-center gap-1.5">
               <span
                 className="h-1.5 w-1.5 shrink-0 rounded-full"
                 style={{ background: "oklch(0.6 0.1 320 / 0.55)" }}
               />
               <p
-                className="text-[11px] font-semibold uppercase tracking-[0.14em]"
+                className="text-[10.5px] font-semibold uppercase tracking-[0.14em]"
                 style={{ color: "oklch(0.45 0.1 320 / 0.75)" }}
               >
                 {role}
               </p>
             </div>
+          </div>
+        </div>
 
-            {/* Gradient divider */}
-            <div
-              className="my-2.5 h-px"
+        {/* Divider */}
+        <div
+          className="h-px shrink-0"
+          style={{
+            background:
+              "linear-gradient(to right, oklch(0.65 0.1 320 / 0.25), transparent)",
+          }}
+        />
+
+        {/* Description — grows to fill remaining space */}
+        <p
+          className="flex-1 text-[12.5px] leading-[1.8]"
+          style={{ color: "oklch(0.35 0.04 320 / 0.72)" }}
+        >
+          {description}
+        </p>
+
+        {/* Dot indicator — always at bottom */}
+        <div className="flex items-center gap-1.5">
+          {[0, 1, 2].map((i) => (
+            <span
+              key={i}
+              className="block rounded-full"
               style={{
+                width: i === 0 ? "16px" : "5px",
+                height: "5px",
                 background:
-                  "linear-gradient(to right, oklch(0.65 0.1 320 / 0.25), transparent)",
+                  i === 0
+                    ? "oklch(0.58 0.1 320 / 0.55)"
+                    : "oklch(0.65 0.07 320 / 0.28)",
               }}
             />
-
-            <p
-              className="text-[12.5px] leading-[1.8]"
-              style={{ color: "oklch(0.35 0.04 320 / 0.72)" }}
-            >
-              {description}
-            </p>
-          </div>
-
-          {/* Dot indicator */}
-          <div className="mt-3 flex items-center gap-1.5">
-            {[0, 1, 2].map((i) => (
-              <span
-                key={i}
-                className="block rounded-full transition-all duration-300"
-                style={{
-                  width: i === 0 ? "16px" : "5px",
-                  height: "5px",
-                  background:
-                    i === 0
-                      ? "oklch(0.58 0.1 320 / 0.55)"
-                      : "oklch(0.65 0.07 320 / 0.28)",
-                }}
-              />
-            ))}
-          </div>
+          ))}
         </div>
       </div>
     </div>
