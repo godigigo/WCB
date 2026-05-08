@@ -19,7 +19,7 @@ const teamLeftColumn = [
   },
   {
     variant: "small",
-    image: "/team/team-3.jpg",
+    image: "/team/team-3.png",
     name: "Dr. Sarah Mitchell",
     role: "OB/GYN specialist",
     description:
@@ -30,7 +30,7 @@ const teamLeftColumn = [
 const teamRightColumn = [
   {
     variant: "small",
-    image: "/team/team-4.jpg",
+    image: "/team/team-4.jpeg",
     name: "Jennifer Rodriguez",
     role: "Nurse practitioner",
     description:

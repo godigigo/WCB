@@ -27,7 +27,7 @@ const supportingMembers = [
   },
   {
     variant: "small",
-    image: "/team/team-3.jpg",
+    image: "/team/team-3.png",
     name: "Lorraine Gabbard",
     role: "Nurse Practitioner",
     description:
@@ -35,7 +35,7 @@ const supportingMembers = [
   },
   {
     variant: "small",
-    image: "/team/team-4.jpg",
+    image: "/team/team-4.jpeg",
     name: "Veronica Celis, MSN, APRN, FNP-C",
     role: "Family Nurse Practitioner",
     description:
