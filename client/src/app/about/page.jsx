@@ -121,28 +121,18 @@ const values = [
 const teamMembers = [
   {
     image: "/team/team-2.jpg",
-    name: "Michelle Thompson",
-    role: "Clinical Coordinator",
+    name: "Katelin Schulte, APRN",
+    role: "Advanced Practice Registered Nurse",
   },
   {
     image: "/team/team-3.jpg",
-    name: "Dr. Sarah Mitchell",
-    role: "OB/GYN Specialist",
-  },
-  {
-    image: "/team/team-4.jpg",
-    name: "Jennifer Rodriguez",
+    name: "Lorraine Gabbard",
     role: "Nurse Practitioner",
   },
   {
-    image: "/team/team-5.jpg",
-    name: "Amanda Chen",
-    role: "Physician Assistant",
-  },
-  {
-    image: "/team/team-6.jpg",
-    name: "Lisa Patterson",
-    role: "Medical Assistant",
+    image: "/team/team-4.jpg",
+    name: "Veronica Celis, MSN, APRN, FNP-C",
+    role: "Family Nurse Practitioner",
   },
 ];
 
@@ -1094,7 +1084,7 @@ function TeamSection() {
           }}
         />
 
-        <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+        <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3 lg:grid-cols-3">
           {teamMembers.map((m) => (
             <div
               key={m.name}
@@ -1118,7 +1108,7 @@ function TeamSection() {
                 }}
               />
 
-              <div className="relative h-[140px] w-full overflow-hidden sm:h-[160px]">
+              <div className="relative h-[300px] w-full overflow-hidden sm:h-[300px]">
                 <Image
                   src={m.image}
                   alt={m.name}
@@ -1435,7 +1425,7 @@ function CTASection() {
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-3">
-          <Button variant="primary" href="/book-appointment">
+          <Button variant="primary" href="/contact">
             Book an appointment
           </Button>
           <Button variant="outline" href="tel:9415003100">

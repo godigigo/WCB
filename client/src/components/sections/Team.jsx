@@ -28,18 +28,18 @@ const supportingMembers = [
   {
     variant: "small",
     image: "/team/team-3.jpg",
-    name: "Gail Shafran MSN FNP-BC, NP",
+    name: "Lorraine Gabbard",
     role: "Nurse Practitioner",
     description:
-      "Board-certified nurse practitioner and graduate of Brandman University, specializing in outpatient and primary care.",
+      "Lorraine Gabbard is a nurse practitioner at Womens Care of Bradenton with a background in women's health, ICU, and long-term care. She is passionate about helping women achieve better health and is proud to serve the Bradenton community.",
   },
   {
     variant: "small",
     image: "/team/team-4.jpg",
-    name: "Kandyce Lopez, PA",
-    role: "Physician Assistant",
+    name: "Veronica Celis, MSN, APRN, FNP-C",
+    role: "Family Nurse Practitioner",
     description:
-      "Certified physician assistant from Nova Southeastern University specializing in ambulatory care and reproductive health.",
+      "Veronica Celis, MSN, APRN, FNP-C, is a Family Nurse Practitioner with over 13 years of nursing experience, including extensive women's health care. She is dedicated to providing compassionate, patient-centered gynecologic care to women in the Bradenton community.",
   },
 ];
 
@@ -58,23 +58,38 @@ export default function Team() {
 
       gsap.from(".team-label", {
         scrollTrigger: { trigger: sectionRef.current, start: "top 82%" },
-        y: 14, opacity: 0, duration: 0.5, ease: "power3.out",
+        y: 14,
+        opacity: 0,
+        duration: 0.5,
+        ease: "power3.out",
       });
 
       gsap.from(".team-heading", {
         scrollTrigger: { trigger: sectionRef.current, start: "top 80%" },
-        y: 36, opacity: 0, duration: 0.9, ease: "power3.out", delay: 0.08,
+        y: 36,
+        opacity: 0,
+        duration: 0.9,
+        ease: "power3.out",
+        delay: 0.08,
       });
 
       gsap.from(".team-subtext", {
         scrollTrigger: { trigger: sectionRef.current, start: "top 80%" },
-        y: 20, opacity: 0, duration: 0.7, ease: "power3.out", delay: 0.16,
+        y: 20,
+        opacity: 0,
+        duration: 0.7,
+        ease: "power3.out",
+        delay: 0.16,
       });
 
       gsap.from(".team-card", {
         scrollTrigger: { trigger: sectionRef.current, start: "top 70%" },
-        y: 32, opacity: 0, duration: 0.85, ease: "power3.out",
-        stagger: 0.11, delay: 0.1,
+        y: 32,
+        opacity: 0,
+        duration: 0.85,
+        ease: "power3.out",
+        stagger: 0.11,
+        delay: 0.1,
       });
     }, sectionRef);
 
@@ -124,12 +139,26 @@ export default function Team() {
       <div
         aria-hidden="true"
         className="pointer-events-none absolute hidden lg:block"
-        style={{ top: "20%", left: "-60px", width: "260px", height: "260px", borderRadius: "50%", border: "1px solid oklch(1 0 0 / 0.08)" }}
+        style={{
+          top: "20%",
+          left: "-60px",
+          width: "260px",
+          height: "260px",
+          borderRadius: "50%",
+          border: "1px solid oklch(1 0 0 / 0.08)",
+        }}
       />
       <div
         aria-hidden="true"
         className="pointer-events-none absolute hidden lg:block"
-        style={{ top: "calc(20% + 20px)", left: "-40px", width: "220px", height: "220px", borderRadius: "50%", border: "1px solid oklch(1 0 0 / 0.05)" }}
+        style={{
+          top: "calc(20% + 20px)",
+          left: "-40px",
+          width: "220px",
+          height: "220px",
+          borderRadius: "50%",
+          border: "1px solid oklch(1 0 0 / 0.05)",
+        }}
       />
 
       {/* ── Content ─────────────────────────────────── */}
@@ -139,14 +168,30 @@ export default function Team() {
         <header className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-xl">
             <div className="team-label mb-5 flex items-center gap-3">
-              <div className="h-px w-8" style={{ background: "linear-gradient(to left, oklch(1 0 0 / 0.4), transparent)" }} />
+              <div
+                className="h-px w-8"
+                style={{
+                  background:
+                    "linear-gradient(to left, oklch(1 0 0 / 0.4), transparent)",
+                }}
+              />
               <span
                 className="inline-flex items-center rounded-full px-3 py-1 text-[10.5px] font-semibold uppercase tracking-[0.22em]"
-                style={{ color: "oklch(0.95 0.02 320)", background: "oklch(1 0 0 / 0.1)", border: "1px solid oklch(1 0 0 / 0.16)" }}
+                style={{
+                  color: "oklch(0.95 0.02 320)",
+                  background: "oklch(1 0 0 / 0.1)",
+                  border: "1px solid oklch(1 0 0 / 0.16)",
+                }}
               >
                 Our Team
               </span>
-              <div className="h-px w-8" style={{ background: "linear-gradient(to right, oklch(1 0 0 / 0.4), transparent)" }} />
+              <div
+                className="h-px w-8"
+                style={{
+                  background:
+                    "linear-gradient(to right, oklch(1 0 0 / 0.4), transparent)",
+                }}
+              />
             </div>
 
             <h2
@@ -171,26 +216,52 @@ export default function Team() {
         {/* ── Divider ──────────────────────────────── */}
         <div
           className="mt-10 h-px"
-          style={{ background: "linear-gradient(to right, oklch(1 0 0 / 0.22), oklch(1 0 0 / 0.08), transparent)" }}
+          style={{
+            background:
+              "linear-gradient(to right, oklch(1 0 0 / 0.22), oklch(1 0 0 / 0.08), transparent)",
+          }}
         />
 
         {/*
-          ── Bento grid ────────────────────────────────
-          Desktop (md+):
-          ┌──────────────┬─────────────┬─────────────┐  ← row 1
-          │              │  Katelin    │    Gail      │
-          │  Dr. Jothi   ├─────────────┴─────────────┤  ← row 2
-          │  (row-span-2)│       Kandyce Lopez        │
-          └──────────────┴────────────────────────────┘
+          ── Layout strategy ────────────────────────────
+          Mobile  (< md): single column, all cards equal — featured uses "small"
+                          variant visually but renders in natural stacked order.
+          Tablet  (sm):   2-column grid, all cards uniform height.
+          Desktop (md+):  3-col bento grid — featured spans 2 rows on the left,
+                          two small cards top-right, one wide card bottom-right.
+        */}
 
-          Both rows have equal height via grid-rows.
-          All cells use h-full so cards stretch to fill.
+        {/* ── Mobile & Tablet: simple uniform grid ── */}
+        <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 md:hidden">
+          {/* Featured rendered with "small" variant so it fits uniformly on mobile */}
+          <div className="team-card sm:col-span-2">
+            <TeamCard
+              {...featuredMember}
+              variant="small"
+            />
+          </div>
+          {supportingMembers.map((member, i) => (
+            <div key={i} className="team-card flex flex-col">
+              <TeamCard {...member} />
+            </div>
+          ))}
+        </div>
+
+        {/* ── Desktop: bento grid ── */}
+        {/*
+          ┌──────────────┬─────────────┬─────────────┐  row 1
+          │              │  Katelin    │  Lorraine   │
+          │  Dr. Jothi   ├─────────────┴─────────────┤  row 2
+          │  (row-span-2)│        Veronica Celis      │
+          └──────────────┴────────────────────────────┘
         */}
         <div
-          className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3 md:grid-rows-2 lg:gap-5"
-          style={{ gridTemplateRows: "1fr 1fr" }}
+          className="mt-8 hidden gap-5 md:grid md:grid-cols-3"
+          style={{
+            gridTemplateRows: "1fr 1fr",
+          }}
         >
-          {/* Featured — spans both rows on the left */}
+          {/* Featured — spans both rows */}
           <div className="team-card md:row-span-2 md:flex md:flex-col">
             <TeamCard {...featuredMember} />
           </div>
