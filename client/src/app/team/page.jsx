@@ -98,7 +98,7 @@ const MEMBERS = [
     nameShort: "Lorraine Gabbard",
     role: "Nurse Practitioner",
     credentials: "NP — Licensed since 2023",
-    image: "/team/team-3.jpg",
+    image: "/team/team-3.png",
     highlights: [
       "Nurse Practitioner since 2023",
       "Background in long-term care & wound care",
@@ -119,7 +119,7 @@ const MEMBERS = [
     nameShort: "Veronica Celis",
     role: "Family Nurse Practitioner",
     credentials: "MSN, APRN, FNP-C — University of South Alabama",
-    image: "/team/team-4.jpg",
+    image: "/team/team-4.jpeg",
     highlights: [
       "MSN — University of South Alabama, graduated with honors 2025",
       "BSN — University of Central Florida",
