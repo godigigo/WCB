@@ -37,7 +37,7 @@ function Eyebrow({ children, light = false }) {
   );
 }
 
-/* ─── Team data (every detail from your existing site) ──────────────────── */
+/* ─── Team data ─────────────────────────────────────────────────────────── */
 const MEMBERS = [
   {
     id: "dr-jothi",
@@ -93,40 +93,45 @@ const MEMBERS = [
     reviews: [],
   },
   {
-    id: "gail-shafran",
-    name: "Gail Shafran MSN FNP-BC, NP",
-    nameShort: "Gail Shafran",
+    id: "lorraine-gabbard",
+    name: "Lorraine Gabbard, NP",
+    nameShort: "Lorraine Gabbard",
     role: "Nurse Practitioner",
-    credentials: "MSN FNP-BC, NP",
+    credentials: "NP — Licensed since 2023",
     image: "/team/team-3.jpg",
     highlights: [
-      "MSN — Family Nurse Practitioner, Board Certified",
-      "Nurse Practitioner, Bradenton, FL",
-      "Currently accepting new patients",
+      "Nurse Practitioner since 2023",
+      "Background in long-term care & wound care",
+      "Experience in Blake Hospital Step-down ICU",
+      "History of women's GYN care",
+      "Committed to quality women's health outcomes",
     ],
     bio: [
-      "Gail Shafran, FNP works in Bradenton, FL as a Nurse Practitioner. The office is accepting new patients.",
+      "Hi, my name is Lorraine Gabbard. I'm a nurse practitioner at Womens Care of Bradenton. I've been working with Dr. Jothi for approximately six months. I've been a nurse practitioner since 2023. Prior to that, I worked in long-term care, wound care, and the Blake Hospital Step-down ICU, with a history of women's GYN care as well.",
+      "I became a nurse practitioner because I really wanted to help provide quality health care options for women and to help improve women's health overall. I am proud to be a part of this team. Thank you for choosing Womens Care of Bradenton.",
+      "I am married and have three children and four grandchildren. My favorite hobbies are reading, gardening, spending time with my children and grandchildren, going to the beach, and going to church.",
     ],
     reviews: [],
   },
   {
-    id: "kandyce-lopez",
-    name: "Kandyce Lopez, PA",
-    nameShort: "Kandyce Lopez",
-    role: "Physician Associate",
-    credentials: "PA — University of Central Florida & Barry University",
+    id: "veronica-celis",
+    name: "Veronica Celis, MSN, APRN, FNP-C",
+    nameShort: "Veronica Celis",
+    role: "Family Nurse Practitioner",
+    credentials: "MSN, APRN, FNP-C — University of South Alabama",
     image: "/team/team-4.jpg",
     highlights: [
-      "BS Health Sciences — University of Central Florida",
-      "MS Clinical Medical Science — Barry University",
-      "Member, Association of Physician Associates in OB/GYN",
+      "MSN — University of South Alabama, graduated with honors 2025",
+      "BSN — University of Central Florida",
+      "13+ years of bedside nursing experience",
+      "8+ years in labor & delivery and OB triage",
+      "Specialisation in family practice & gynecologic care",
       "Bilingual — English & Spanish",
-      "Specialises in women's care & reproductive health",
     ],
     bio: [
-      "Kandyce is our certified physician associate. She holds a Bachelor of Science in Health Sciences from the University of Central Florida and a Masters of Clinical Medical Science degree from Barry University. She is a member of the Association of Physician Associates in Obstetrics and Gynecology.",
-      "As a Cuban American bilingual Spanish-speaking provider, Kandyce specialises in women's care and reproductive health. She is compassionate and prioritises preventative medicine while aiming to treat the body as a whole. Her objective is to involve you as an active participant in your wellness journey while delivering exceptional care.",
-      "In her free time, Kandyce cherishes moments with her family, friends and pets here in Florida. When she's not at the beach, she's training for a run, attending church service or taking long walks with her DSLR camera.",
+      "Veronica Celis, MSN, APRN, FNP-C, is a Family Nurse Practitioner with a strong background in women's health and over 13 years of bedside nursing experience. She earned her Master of Science in Nursing from the University of South Alabama, graduating with honors in 2025 with a specialization in family practice. She also holds a Bachelor of Science in Nursing from the University of Central Florida.",
+      "Veronica spent more than eight years working in women's health as a labor and delivery and OB triage nurse. Her experience in women's health has strengthened her clinical skills and shaped her patient-centered approach. She is dedicated to providing comprehensive gynecologic care and creating a comfortable environment where patients feel heard and supported.",
+      "With her calm and approachable demeanor, Veronica focuses on building trusting relationships and delivering compassionate, evidence-based care. She recently relocated to Bradenton from the Space Coast and is excited to explore everything Florida's West Coast has to offer. Outside of work, she enjoys spending time outdoors with her husband and two daughters.",
     ],
     reviews: [],
   },
@@ -152,11 +157,10 @@ const SHARED_REVIEWS = [
 ];
 
 /* ─── Smooth scroll helper ──────────────────────────────────────────────── */
-// ↓ CHANGE 2: smooth scroll handler — replaces default anchor jump
 function smoothScrollTo(id) {
   const el = document.getElementById(id);
   if (!el) return;
-  const top = el.getBoundingClientRect().top + window.scrollY - 80; // 80px nav offset
+  const top = el.getBoundingClientRect().top + window.scrollY - 80;
   window.scrollTo({ top, behavior: "smooth" });
 }
 
@@ -238,7 +242,6 @@ function TeamHero() {
           expert women&apos;s healthcare in Bradenton, FL.
         </p>
 
-        {/* ↓ CHANGE 1: Quick-nav pills — richer highlighted style + CHANGE 2: smooth scroll onClick */}
         <div className="flex flex-wrap items-center justify-center gap-3">
           {MEMBERS.map((m) => (
             <button
@@ -246,7 +249,6 @@ function TeamHero() {
               onClick={() => smoothScrollTo(m.id)}
               className="th-pill group inline-flex items-center gap-2 rounded-full px-4 py-2 text-[12.5px] font-semibold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg"
               style={{
-                // ↓ CHANGE 1: warm rose-mauve tinted fill — makes pills feel highlighted
                 background: "oklch(0.91 0.055 330 / 0.85)",
                 backdropFilter: "blur(12px)",
                 WebkitBackdropFilter: "blur(12px)",
@@ -283,7 +285,7 @@ function MemberSection({ member, index }) {
   useLayoutEffect(() => {
     if (typeof window === "undefined") return;
     const ctx = gsap.context(() => {
-      gsap.from(".ms-left",  {
+      gsap.from(".ms-left", {
         scrollTrigger: { trigger: ref.current, start: "top 78%" },
         x: -45, opacity: 0, duration: 1.0, ease: "power3.out",
       });
@@ -701,7 +703,7 @@ function CTASection() {
           Schedule an appointment with our expert, compassionate team in Bradenton, FL.
         </p>
         <div className="flex flex-wrap items-center justify-center gap-3">
-          <Button variant="primary" href="/book-appointment">Book an appointment</Button>
+          <Button variant="primary" href="/contact">Book an appointment</Button>
           <Button variant="outline" href="tel:9415003100">Call (941) 500-3100</Button>
         </div>
         <p className="mt-1 text-[11.5px]" style={{ color: "oklch(1 0 0 / 0.35)" }}>

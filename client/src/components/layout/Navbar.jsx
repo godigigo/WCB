@@ -10,7 +10,6 @@ const services = [
   { label: "Well-Woman Exams",           href: "/services/well-woman-exams",           external: false },
   { label: "Minimally Invasive Surgery", href: "/services/minimally-invasive-surgery", external: false },
   { label: "Infertility",                href: "/services/infertility",                external: false },
-  { label: "MedSpa",                     href: "https://www.spabradenton.com/",         external: true  },
 ];
 
 const patientResources = [
@@ -46,7 +45,6 @@ export default function Navbar() {
   const servicesRef = useRef(null);
   const patientRef = useRef(null);
 
-  // Close dropdowns when clicking outside
   useEffect(() => {
     function handleClickOutside(e) {
       if (servicesRef.current && !servicesRef.current.contains(e.target)) {
@@ -60,7 +58,6 @@ export default function Navbar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Shared dropdown item renderer
   function DropdownItem({ item, onClose }) {
     const sharedClass =
       "group flex items-center justify-between px-4 py-2.5 text-[14px] font-medium transition-colors duration-150 hover:bg-[oklch(0.94_0.03_320_/_0.4)]";
@@ -131,7 +128,6 @@ export default function Navbar() {
     );
   }
 
-  // Shared desktop dropdown panel
   function DesktopDropdown({ items, footerLabel, onClose }) {
     return (
       <div
@@ -146,7 +142,6 @@ export default function Navbar() {
             "0 4px 8px oklch(0.3 0.06 320 / 0.04), 0 16px 40px oklch(0.3 0.06 320 / 0.11)",
         }}
       >
-        {/* Top accent line */}
         <div
           className="h-[3px] w-full"
           style={{
@@ -169,7 +164,6 @@ export default function Navbar() {
           ))}
         </ul>
 
-        {/* Footer hint */}
         <div
           className="mx-3 mb-2 mt-0.5 rounded-xl px-3 py-2.5"
           style={{ background: "oklch(0.94 0.04 320 / 0.35)" }}
@@ -254,13 +248,14 @@ export default function Navbar() {
                   About
                 </Link>
               </li>
+
               <li>
                 <Link href="/team" className="hover:text-primary transition-colors">
                   Team
                 </Link>
               </li>
 
-              {/* Patient Resources dropdown */}
+              {/* Patient Info dropdown */}
               <li ref={patientRef} className="relative">
                 <button
                   type="button"
@@ -293,6 +288,29 @@ export default function Navbar() {
                     onClose={() => setPatientOpen(false)}
                   />
                 )}
+              </li>
+
+              {/* MedSpa — standalone external link */}
+              <li>
+                <a
+                  href="https://www.spabradenton.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1 text-base text-foreground hover:text-primary transition-colors"
+                >
+                  MedSpa
+                  <svg
+                    className="h-3.5 w-3.5 opacity-50"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
               </li>
             </ul>
           </div>
@@ -341,7 +359,7 @@ export default function Navbar() {
               </Link>
             </li>
 
-            {/* Mobile services accordion */}
+            {/* Mobile Services accordion */}
             <li>
               <button
                 type="button"
@@ -372,30 +390,14 @@ export default function Navbar() {
                 >
                   {services.map((s, i) => (
                     <li key={s.href}>
-                      {s.external ? (
-                        <a
-                          href={s.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={() => { setMobileOpen(false); setMobileServicesOpen(false); }}
-                          className="flex items-center justify-between px-4 py-2.5 text-[14px] font-medium transition-colors hover:bg-[oklch(0.94_0.03_320_/_0.4)]"
-                          style={{ color: "#3A2F2B" }}
-                        >
-                          {s.label}
-                          <svg className="h-3.5 w-3.5 opacity-50" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" style={{ color: "oklch(0.48 0.13 322)" }}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6m0 0v6m0-6L10 14" />
-                          </svg>
-                        </a>
-                      ) : (
-                        <Link
-                          href={s.href}
-                          onClick={() => { setMobileOpen(false); setMobileServicesOpen(false); }}
-                          className="block px-4 py-2.5 text-[14px] font-medium transition-colors hover:bg-[oklch(0.94_0.03_320_/_0.4)]"
-                          style={{ color: "#3A2F2B" }}
-                        >
-                          {s.label}
-                        </Link>
-                      )}
+                      <Link
+                        href={s.href}
+                        onClick={() => { setMobileOpen(false); setMobileServicesOpen(false); }}
+                        className="block px-4 py-2.5 text-[14px] font-medium transition-colors hover:bg-[oklch(0.94_0.03_320_/_0.4)]"
+                        style={{ color: "#3A2F2B" }}
+                      >
+                        {s.label}
+                      </Link>
                       {i < services.length - 1 && (
                         <div className="mx-4 h-px" style={{ background: "oklch(0.88 0.03 320 / 0.25)" }} />
                       )}
@@ -415,7 +417,7 @@ export default function Navbar() {
               </Link>
             </li>
 
-            {/* Mobile Patient Resources accordion */}
+            {/* Mobile Patient Info accordion */}
             <li>
               <button
                 type="button"
@@ -477,6 +479,30 @@ export default function Navbar() {
                   ))}
                 </ul>
               )}
+            </li>
+
+            {/* MedSpa — standalone external link */}
+            <li>
+              <a
+                href="https://www.spabradenton.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center gap-1.5 hover:text-primary transition-colors"
+              >
+                MedSpa
+                <svg
+                  className="h-3.5 w-3.5 opacity-50"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6m0 0v6m0-6L10 14" />
+                </svg>
+              </a>
             </li>
           </ul>
 
