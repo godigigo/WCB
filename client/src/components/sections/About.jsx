@@ -322,7 +322,7 @@ export default function AboutSection() {
               />
 
               <div>
-                <Button variant="outline">Meet our team</Button>
+                <Button variant="outline" href="/about" >Learn More About Us</Button>
               </div>
             </div>
           </div>

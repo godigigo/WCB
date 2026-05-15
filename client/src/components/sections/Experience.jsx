@@ -91,7 +91,7 @@ export default function Experience() {
               Trusted expertise and compassionate care in Bradenton.
             </p>
             <div className="mt-6">
-              <Button variant="outline">Learn more</Button>
+              <Button variant="outline" href="/about">Learn more</Button>
             </div>
           </div>
 

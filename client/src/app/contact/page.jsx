@@ -205,7 +205,7 @@ function ContactHero() {
             <Button
               className="contact-hero-cta"
               variant="primary"
-              href="/book-appointment"
+              href="/contact"
             >
               Book an appointment
             </Button>
