@@ -209,7 +209,7 @@ function AboutHero({ sectionRef }) {
             "radial-gradient(circle at 60% 60%, oklch(0.93 0.03 60 / 0.3), transparent 65%)",
         }}
       />
-      {/* Decorative rings with subtle continuous motion */}
+      {/* Decorative rings */}
       {[
         { size: 300, top: "8%", right: "6%" },
         { size: 250, top: "calc(8% + 25px)", right: "calc(6% + 25px)" },
@@ -260,7 +260,7 @@ function AboutHero({ sectionRef }) {
             />
           </div>
 
-          {/* Word-split heading for animation */}
+          {/* Heading */}
           <h1
             className="about-hero-heading font-display leading-[1.04] tracking-[-0.03em] text-[#18120F]"
             style={{
@@ -320,11 +320,19 @@ function AboutHero({ sectionRef }) {
           </p>
 
           <div className="about-hero-cta mt-9 flex flex-wrap items-center gap-3">
-            <Button variant="primary" href="/book-appointment">
+            <Button variant="primary" href="/contact">
               Book an appointment
             </Button>
-            <Button variant="outline" href="/services">
-              Our services
+            <Button
+              variant="outline"
+              onClick={(e) => {
+                e.preventDefault();
+                document
+                  .getElementById("mission")
+                  ?.scrollIntoView({ behavior: "smooth" });
+              }}
+            >
+              Explore More
             </Button>
           </div>
         </div>
@@ -389,7 +397,11 @@ function MissionSection() {
   }, []);
 
   return (
-    <section ref={ref} className="relative w-full overflow-hidden bg-[#FAF5F1]">
+    <section
+      id="mission"
+      ref={ref}
+      className="relative w-full overflow-hidden bg-[#FAF5F1]"
+    >
       <GrainOverlay opacity={0.025} />
       <div className="relative mx-auto max-w-6xl px-4 py-20 sm:px-6 md:py-24 lg:px-0 lg:py-28">
         {/* Section label */}
@@ -445,6 +457,7 @@ function MissionSection() {
               </div>
             ))}
           </div>
+
           {/* Left: big quote */}
           <div className="mission-item">
             <h2
@@ -482,8 +495,6 @@ function MissionSection() {
               deliver.
             </p>
           </div>
-
-          {/* Right: values grid */}
         </div>
       </div>
     </section>
@@ -559,7 +570,6 @@ function FounderSection() {
         <div className="grid gap-12 md:grid-cols-2 md:items-center md:gap-16">
           {/* Image */}
           <div className="founder-img relative">
-            {/* Glow behind */}
             <div
               aria-hidden="true"
               className="pointer-events-none absolute inset-[-16px] rounded-[2rem]"

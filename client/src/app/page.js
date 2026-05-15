@@ -12,13 +12,15 @@ const page = () => {
   return (
     <div>
       <Hero />
-      <Experience/>
+      <div id="experience">
+        <Experience />
+      </div>
       <About />
       <Team />
-      <Testimonials/>
-      <FacebookFeed/>
-      <Blog/>
-      <ContactCTA/>
+      <Testimonials />
+      <FacebookFeed />
+      <Blog />
+      <ContactCTA />
     </div>
   )
 }

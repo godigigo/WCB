@@ -8,7 +8,6 @@ import Button from "@/components/ui/Button";
 export default function Hero() {
   const heroRef = useRef(null);
 
-
   useLayoutEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -70,7 +69,6 @@ export default function Hero() {
       className="relative min-h-screen overflow-hidden bg-[#FAF5F1]"
       style={{ fontFamily: "var(--font-body, 'DM Sans', system-ui, -apple-system, sans-serif)" }}
     >
-      {/* Layered background: grain + gradients + soft shapes */}
       {/* Grain */}
       <div
         aria-hidden="true"
@@ -111,7 +109,7 @@ export default function Hero() {
       <div className="mx-auto grid w-full max-w-[1200px] grid-cols-1 items-center gap-12 px-6 py-16 sm:px-10 md:grid-cols-2 md:gap-16 md:py-24 lg:px-12 lg:py-28">
         {/* LEFT: Text */}
         <div className="order-2 flex flex-col md:order-1">
-          {/* Location label with pill accent */}
+          {/* Location label */}
           <div className="hero-label mb-7 inline-flex items-center gap-3 rounded-full bg-white/60 px-3 py-1.5 shadow-sm ring-1 ring-white/70 backdrop-blur-[10px]">
             <span
               className="hero-label-line block h-[2px] w-8 rounded-full"
@@ -175,10 +173,19 @@ export default function Hero() {
 
           {/* CTAs */}
           <div className="mb-10 flex flex-wrap items-center gap-3">
-            <Button className="hero-cta" variant="primary" href="/book-appointment">
+            <Button className="hero-cta" variant="primary" href="/contact">
               Book an appointment
             </Button>
-            <Button className="hero-cta" variant="outline" href="/services">
+            <Button
+              className="hero-cta"
+              variant="outline"
+              onClick={(e) => {
+                e.preventDefault();
+                document
+                  .getElementById("experience")
+                  ?.scrollIntoView({ behavior: "smooth" });
+              }}
+            >
               See how we help
             </Button>
           </div>

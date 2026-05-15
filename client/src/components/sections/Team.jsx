@@ -4,6 +4,7 @@ import { useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import TeamCard from "@/components/ui/TeamCard";
+import Button from "@/components/ui/Button";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -90,6 +91,15 @@ export default function Team() {
         ease: "power3.out",
         stagger: 0.11,
         delay: 0.1,
+      });
+
+      gsap.from(".team-cta", {
+        scrollTrigger: { trigger: sectionRef.current, start: "top 60%" },
+        y: 20,
+        opacity: 0,
+        duration: 0.7,
+        ease: "power3.out",
+        delay: 0.2,
       });
     }, sectionRef);
 
@@ -222,18 +232,8 @@ export default function Team() {
           }}
         />
 
-        {/*
-          ── Layout strategy ────────────────────────────
-          Mobile  (< md): single column, all cards equal — featured uses "small"
-                          variant visually but renders in natural stacked order.
-          Tablet  (sm):   2-column grid, all cards uniform height.
-          Desktop (md+):  3-col bento grid — featured spans 2 rows on the left,
-                          two small cards top-right, one wide card bottom-right.
-        */}
-
         {/* ── Mobile & Tablet: simple uniform grid ── */}
         <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 md:hidden">
-          {/* Featured rendered with "small" variant so it fits uniformly on mobile */}
           <div className="team-card sm:col-span-2">
             <TeamCard
               {...featuredMember}
@@ -248,13 +248,6 @@ export default function Team() {
         </div>
 
         {/* ── Desktop: bento grid ── */}
-        {/*
-          ┌──────────────┬─────────────┬─────────────┐  row 1
-          │              │  Katelin    │  Lorraine   │
-          │  Dr. Jothi   ├─────────────┴─────────────┤  row 2
-          │  (row-span-2)│        Veronica Celis      │
-          └──────────────┴────────────────────────────┘
-        */}
         <div
           className="mt-8 hidden gap-5 md:grid md:grid-cols-3"
           style={{
@@ -281,6 +274,14 @@ export default function Team() {
             <TeamCard {...supportingMembers[2]} />
           </div>
         </div>
+
+        {/* ── Learn More CTA ───────────────────────── */}
+        <div className="team-cta mt-10 flex justify-center">
+          <Button className="hero-cta" variant="primary" href="/team">
+            Learn More
+          </Button>
+        </div>
+
       </div>
     </section>
   );
