@@ -43,7 +43,7 @@ function DotGrid({ color = "oklch(0.45 0.05 320)", opacity = 0.045 }) {
 
 // ─── Contact Hero ────────────────────────────────────────────────────────────
 
-function ContactHero() {
+function ContactHero({ onBookAppointment }) {
   const ref = useRef(null);
 
   useLayoutEffect(() => {
@@ -59,6 +59,7 @@ function ContactHero() {
       const tl = gsap.timeline({
         defaults: { duration: 0.85, ease: "power4.out" },
       });
+
       tl.to(".contact-hero-label", { opacity: 1, y: 0 })
         .to(
           ".contact-hero-heading .word",
@@ -82,6 +83,7 @@ function ContactHero() {
         yoyo: true,
       });
     }, ref);
+
     return () => ctx.revert();
   }, []);
 
@@ -96,7 +98,6 @@ function ContactHero() {
       <GrainOverlay opacity={0.04} />
       <DotGrid color="oklch(0.55 0.06 320)" opacity={0.04} />
 
-      {/* Ambient blobs */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -right-40 -top-40 h-[720px] w-[720px] rounded-full"
@@ -124,7 +125,6 @@ function ContactHero() {
       />
 
       <div className="relative mx-auto flex max-w-6xl flex-col items-start justify-center gap-10 px-4 py-24 sm:px-6 md:flex-row md:items-center md:py-32 lg:px-0 lg:py-36">
-        {/* LEFT */}
         <div className="relative z-[1] flex-1">
           <div className="contact-hero-label mb-7 flex items-center gap-3">
             <div
@@ -205,10 +205,12 @@ function ContactHero() {
             <Button
               className="contact-hero-cta"
               variant="primary"
-              href="/contact"
+              onClick={onBookAppointment}
+              type="button"
             >
               Book an appointment
             </Button>
+
             <Button
               className="contact-hero-cta"
               variant="outline"
@@ -236,6 +238,7 @@ function ContactHero() {
               </svg>
               <span>Mon–Thu 8:00am–5:00pm · Fri 8:00am–1:00pm</span>
             </div>
+
             <div className="flex items-start gap-2">
               <svg
                 className="mt-0.5 h-3.5 w-3.5 shrink-0"
@@ -259,7 +262,6 @@ function ContactHero() {
           </div>
         </div>
 
-        {/* RIGHT: Contact card */}
         <div className="contact-hero-card relative z-[1] w-full max-w-[380px]">
           <div
             aria-hidden="true"
@@ -347,7 +349,7 @@ function ContactHero() {
   );
 }
 
-// ─── Contact Form (Web3Forms) ─────────────────────────────────────────────────
+// ─── Contact Form ────────────────────────────────────────────────────────────
 
 const INITIAL_FORM = {
   name: "",
@@ -359,7 +361,6 @@ const INITIAL_FORM = {
   message: "",
 };
 
-// Inline field wrapper — reuses the same visual style across all inputs
 function FieldWrap({ label, required, error, children }) {
   return (
     <div className="flex flex-col gap-1.5">
@@ -390,7 +391,13 @@ function InputBox({ focused, error, children }) {
       className="flex items-center rounded-2xl px-3.5 py-2.5 transition-all duration-200"
       style={{
         background: "oklch(0.98 0.01 80)",
-        border: `1px solid ${error ? "oklch(0.5 0.18 20 / 0.6)" : focused ? "oklch(0.52 0.12 320 / 0.6)" : "oklch(0.9 0.02 80)"}`,
+        border: `1px solid ${
+          error
+            ? "oklch(0.5 0.18 20 / 0.6)"
+            : focused
+              ? "oklch(0.52 0.12 320 / 0.6)"
+              : "oklch(0.9 0.02 80)"
+        }`,
         boxShadow:
           focused && !error
             ? "0 0 0 3px oklch(0.52 0.12 320 / 0.1)"
@@ -411,7 +418,7 @@ function ContactForm() {
   const [form, setForm] = useState(INITIAL_FORM);
   const [errors, setErrors] = useState({});
   const [focused, setFocused] = useState("");
-  const [status, setStatus] = useState("idle"); // idle | loading | success | error
+  const [status, setStatus] = useState("idle");
   const formRef = useRef(null);
 
   const set = (field) => (e) => {
@@ -448,11 +455,9 @@ function ContactForm() {
         },
         body: JSON.stringify({
           access_key: ACCESS_KEY,
-          // Web3Forms hidden config
           subject: `Appointment Request — ${form.reason}`,
           from_name: "Women's Care of Bradenton Website",
           botcheck: "",
-          // Form fields
           "Full Name": form.name,
           Email: form.email,
           Phone: form.phone || "—",
@@ -479,7 +484,6 @@ function ContactForm() {
     }
   };
 
-  // ── Success screen ────────────────────────────────────────────────────────
   if (status === "success") {
     return (
       <div className="flex flex-col items-center justify-center gap-5 py-14 text-center">
@@ -539,7 +543,6 @@ function ContactForm() {
       noValidate
       className="space-y-4"
     >
-      {/* Honeypot — hidden from humans, traps bots */}
       <input
         type="checkbox"
         name="botcheck"
@@ -547,7 +550,6 @@ function ContactForm() {
         style={{ display: "none" }}
       />
 
-      {/* Error banner */}
       {status === "error" && (
         <div
           className="flex items-start gap-2.5 rounded-2xl p-3.5 text-[13px] leading-[1.7]"
@@ -571,7 +573,6 @@ function ContactForm() {
         </div>
       )}
 
-      {/* Name */}
       <FieldWrap label="Full name" required error={errors.name}>
         <InputBox focused={focused === "name"} error={errors.name}>
           <input
@@ -586,7 +587,6 @@ function ContactForm() {
         </InputBox>
       </FieldWrap>
 
-      {/* Email + Phone */}
       <div className="grid gap-4 sm:grid-cols-2">
         <FieldWrap label="Email" required error={errors.email}>
           <InputBox focused={focused === "email"} error={errors.email}>
@@ -601,6 +601,7 @@ function ContactForm() {
             />
           </InputBox>
         </FieldWrap>
+
         <FieldWrap label="Phone" error={errors.phone}>
           <InputBox focused={focused === "phone"} error={errors.phone}>
             <input
@@ -616,7 +617,6 @@ function ContactForm() {
         </FieldWrap>
       </div>
 
-      {/* Date + Time */}
       <div className="grid gap-4 sm:grid-cols-2">
         <FieldWrap label="Preferred date" error={errors.date}>
           <InputBox focused={focused === "date"} error={errors.date}>
@@ -631,6 +631,7 @@ function ContactForm() {
             />
           </InputBox>
         </FieldWrap>
+
         <FieldWrap label="Preferred time" error={errors.time}>
           <InputBox focused={focused === "time"} error={errors.time}>
             <input
@@ -645,7 +646,6 @@ function ContactForm() {
         </FieldWrap>
       </div>
 
-      {/* Reason */}
       <FieldWrap label="Reason for visit" required error={errors.reason}>
         <InputBox focused={focused === "reason"} error={errors.reason}>
           <select
@@ -669,13 +669,16 @@ function ContactForm() {
         </InputBox>
       </FieldWrap>
 
-      {/* Message */}
       <FieldWrap label="Message (optional)" error={errors.message}>
         <div
           className="rounded-2xl px-3.5 py-2.5 transition-all duration-200"
           style={{
             background: "oklch(0.98 0.01 80)",
-            border: `1px solid ${focused === "message" ? "oklch(0.52 0.12 320 / 0.6)" : "oklch(0.9 0.02 80)"}`,
+            border: `1px solid ${
+              focused === "message"
+                ? "oklch(0.52 0.12 320 / 0.6)"
+                : "oklch(0.9 0.02 80)"
+            }`,
             boxShadow:
               focused === "message"
                 ? "0 0 0 3px oklch(0.52 0.12 320 / 0.1)"
@@ -694,7 +697,6 @@ function ContactForm() {
         </div>
       </FieldWrap>
 
-      {/* Submit */}
       <div className="flex flex-col gap-3 pt-1 sm:flex-row sm:items-center sm:justify-between">
         <button
           type="submit"
@@ -707,7 +709,6 @@ function ContactForm() {
         >
           {status === "loading" ? (
             <>
-              {/* Spinner */}
               <svg
                 className="h-4 w-4 animate-spin"
                 viewBox="0 0 24 24"
@@ -748,6 +749,7 @@ function ContactForm() {
             </>
           )}
         </button>
+
         <p
           className="text-[11px]"
           style={{ color: "oklch(0.5 0.06 320 / 0.8)" }}
@@ -762,38 +764,48 @@ function ContactForm() {
 
 // ─── Details + Form Section ───────────────────────────────────────────────────
 
-function ContactDetailsSection() {
-  const ref = useRef(null);
+function ContactDetailsSection({ sectionRef }) {
+  const localRef = useRef(null);
 
   useLayoutEffect(() => {
-    if (typeof window === "undefined") return;
+    const targetRef = sectionRef?.current || localRef.current;
+    if (typeof window === "undefined" || !targetRef) return;
+
     const ctx = gsap.context(() => {
       gsap.set(".contact-detail", { y: 32, opacity: 0 });
       gsap.set(".contact-form-wrap", { y: 26, opacity: 0 });
 
       gsap.to(".contact-detail", {
-        scrollTrigger: { trigger: ref.current, start: "top 78%" },
+        scrollTrigger: { trigger: targetRef, start: "top 78%" },
         y: 0,
         opacity: 1,
         duration: 0.85,
         ease: "power3.out",
         stagger: 0.12,
       });
+
       gsap.to(".contact-form-wrap", {
-        scrollTrigger: { trigger: ref.current, start: "top 70%" },
+        scrollTrigger: { trigger: targetRef, start: "top 70%" },
         y: 0,
         opacity: 1,
         duration: 0.75,
         ease: "power3.out",
         delay: 0.1,
       });
-    }, ref);
+    }, targetRef);
+
     return () => ctx.revert();
-  }, []);
+  }, [sectionRef]);
 
   return (
-    <section ref={ref} className="relative w-full overflow-hidden bg-[#FAF5F1]">
+    <section
+      id="appointment"
+      ref={sectionRef || localRef}
+      className="relative w-full overflow-hidden bg-[#FAF5F1]"
+      style={{ scrollMarginTop: "110px" }}
+    >
       <GrainOverlay opacity={0.03} />
+
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -right-32 top-1/3 h-[460px] w-[460px] rounded-full"
@@ -805,7 +817,6 @@ function ContactDetailsSection() {
 
       <div className="relative mx-auto max-w-6xl px-4 py-20 sm:px-6 md:py-24 lg:px-0 lg:py-28">
         <div className="grid gap-12 md:grid-cols-[minmax(0,1.05fr)_minmax(0,1.2fr)] md:items-start md:gap-16">
-          {/* LEFT: Details */}
           <div className="space-y-8">
             <div className="contact-detail space-y-3">
               <div className="flex items-center gap-3">
@@ -823,6 +834,7 @@ function ContactDetailsSection() {
                   Visit us
                 </span>
               </div>
+
               <h2
                 className="leading-[1.12] tracking-[-0.02em] text-[#16100D]"
                 style={{
@@ -838,6 +850,7 @@ function ContactDetailsSection() {
                   clinic in Bradenton.
                 </span>
               </h2>
+
               <p
                 className="text-[14.5px] leading-[1.9]"
                 style={{ color: "#7A7068" }}
@@ -850,7 +863,6 @@ function ContactDetailsSection() {
             </div>
 
             <div className="contact-detail grid gap-5 sm:grid-cols-2">
-              {/* Address card */}
               <div
                 className="rounded-[18px] p-4"
                 style={{
@@ -867,7 +879,8 @@ function ContactDetailsSection() {
                   Address
                 </p>
                 <p className="mt-2 text-[14px] font-medium text-[#18120F]">
-                  4216 Cortez Rd W<br />
+                  4216 Cortez Rd W
+                  <br />
                   Bradenton, FL 34210
                 </p>
                 <Link
@@ -894,7 +907,6 @@ function ContactDetailsSection() {
                 </Link>
               </div>
 
-              {/* Contact card */}
               <div
                 className="rounded-[18px] p-4"
                 style={{
@@ -934,7 +946,6 @@ function ContactDetailsSection() {
               </div>
             </div>
 
-            {/* Hours */}
             <div
               className="contact-detail rounded-[18px] p-4 sm:p-5"
               style={{
@@ -969,7 +980,6 @@ function ContactDetailsSection() {
             </div>
           </div>
 
-          {/* RIGHT: Form */}
           <div
             className="contact-form-wrap rounded-[26px] p-6 sm:p-7"
             style={{
@@ -1015,16 +1025,30 @@ function MapSection() {
 
       gsap.to(".contact-map-copy", {
         scrollTrigger: { trigger: ref.current, start: "top 80%" },
-        x: 0, opacity: 1, duration: 0.9, ease: "power3.out",
+        x: 0,
+        opacity: 1,
+        duration: 0.9,
+        ease: "power3.out",
       });
+
       gsap.to(".contact-map-frame", {
         scrollTrigger: { trigger: ref.current, start: "top 80%" },
-        x: 0, opacity: 1, duration: 0.9, ease: "power3.out", delay: 0.08,
+        x: 0,
+        opacity: 1,
+        duration: 0.9,
+        ease: "power3.out",
+        delay: 0.08,
       });
+
       gsap.to(".contact-map-frame-inner", {
-        y: -10, duration: 5, ease: "sine.inOut", repeat: -1, yoyo: true,
+        y: -10,
+        duration: 5,
+        ease: "sine.inOut",
+        repeat: -1,
+        yoyo: true,
       });
     }, ref);
+
     return () => ctx.revert();
   }, []);
 
@@ -1035,50 +1059,96 @@ function MapSection() {
 
       <div className="relative mx-auto max-w-6xl px-4 py-20 sm:px-6 md:py-24 lg:px-0 lg:py-28">
         <div className="grid gap-10 md:grid-cols-2 md:items-stretch md:gap-14">
-
-          {/* Copy */}
           <div className="contact-map-copy flex flex-col justify-center gap-5">
             <div className="flex items-center gap-3">
-              <div className="h-px w-8" style={{ background: "linear-gradient(to left, oklch(0.55 0.1 200 / 0.55), transparent)" }} />
-              <span className="text-[10.5px] font-semibold uppercase tracking-[0.22em]" style={{ color: "oklch(0.42 0.12 320)" }}>
+              <div
+                className="h-px w-8"
+                style={{
+                  background:
+                    "linear-gradient(to left, oklch(0.55 0.1 200 / 0.55), transparent)",
+                }}
+              />
+              <span
+                className="text-[10.5px] font-semibold uppercase tracking-[0.22em]"
+                style={{ color: "oklch(0.42 0.12 320)" }}
+              >
                 Map &amp; directions
               </span>
             </div>
-            <h2 className="leading-[1.12] tracking-[-0.02em] text-[#16100D]"
-              style={{ fontFamily: "var(--font-display, 'Playfair Display', serif)", fontSize: "clamp(1.8rem, 3vw, 2.4rem)" }}>
+
+            <h2
+              className="leading-[1.12] tracking-[-0.02em] text-[#16100D]"
+              style={{
+                fontFamily: "var(--font-display, 'Playfair Display', serif)",
+                fontSize: "clamp(1.8rem, 3vw, 2.4rem)",
+              }}
+            >
               Easy to reach from{" "}
-              <span className="italic" style={{ color: "oklch(0.52 0.12 65)" }}>wherever you are.</span>
+              <span className="italic" style={{ color: "oklch(0.52 0.12 65)" }}>
+                wherever you are.
+              </span>
             </h2>
-            <p className="text-[14.5px] leading-[1.9]" style={{ color: "#7A7068" }}>
-              Women&apos;s Care of Bradenton is centrally located on Cortez Road West, minutes from US-41
-              and just a short drive from downtown Bradenton, Sarasota, and the Gulf beaches.
+
+            <p
+              className="text-[14.5px] leading-[1.9]"
+              style={{ color: "#7A7068" }}
+            >
+              Women&apos;s Care of Bradenton is centrally located on Cortez Road
+              West, minutes from US-41 and just a short drive from downtown
+              Bradenton, Sarasota, and the Gulf beaches.
             </p>
+
             <ul className="space-y-2 text-[13.5px]" style={{ color: "#7A7068" }}>
               <li className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full shrink-0" style={{ background: "oklch(0.55 0.12 150)" }} />
+                <span
+                  className="h-1.5 w-1.5 rounded-full shrink-0"
+                  style={{ background: "oklch(0.55 0.12 150)" }}
+                />
                 Free on-site parking
               </li>
               <li className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full shrink-0" style={{ background: "oklch(0.55 0.12 150)" }} />
+                <span
+                  className="h-1.5 w-1.5 rounded-full shrink-0"
+                  style={{ background: "oklch(0.55 0.12 150)" }}
+                />
                 Ground floor access
               </li>
               <li className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full shrink-0" style={{ background: "oklch(0.55 0.12 150)" }} />
+                <span
+                  className="h-1.5 w-1.5 rounded-full shrink-0"
+                  style={{ background: "oklch(0.55 0.12 150)" }}
+                />
                 Wheelchair accessible entrance
               </li>
               <li className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full shrink-0" style={{ background: "oklch(0.55 0.12 150)" }} />
+                <span
+                  className="h-1.5 w-1.5 rounded-full shrink-0"
+                  style={{ background: "oklch(0.55 0.12 150)" }}
+                />
                 Pharmacy and labs nearby
               </li>
             </ul>
           </div>
 
-          {/* Map */}
           <div className="contact-map-frame relative">
-            <div aria-hidden="true" className="absolute -inset-4 rounded-[30px]"
-              style={{ background: "radial-gradient(circle at 20% 0%, oklch(0.9 0.06 330 / 0.3), transparent 65%)", filter: "blur(22px)" }} />
-            <div className="contact-map-frame-inner relative overflow-hidden rounded-[28px]"
-              style={{ background: "linear-gradient(145deg, oklch(0.2 0.05 220 / 0.8), oklch(0.25 0.08 260))", boxShadow: "0 6px 18px oklch(0.3 0.04 60 / 0.18), 0 24px 60px oklch(0.3 0.04 60 / 0.22)" }}>
+            <div
+              aria-hidden="true"
+              className="absolute -inset-4 rounded-[30px]"
+              style={{
+                background:
+                  "radial-gradient(circle at 20% 0%, oklch(0.9 0.06 330 / 0.3), transparent 65%)",
+                filter: "blur(22px)",
+              }}
+            />
+            <div
+              className="contact-map-frame-inner relative overflow-hidden rounded-[28px]"
+              style={{
+                background:
+                  "linear-gradient(145deg, oklch(0.2 0.05 220 / 0.8), oklch(0.25 0.08 260))",
+                boxShadow:
+                  "0 6px 18px oklch(0.3 0.04 60 / 0.18), 0 24px 60px oklch(0.3 0.04 60 / 0.22)",
+              }}
+            >
               <div className="aspect-[4/3] w-full">
                 <iframe
                   title="Women's Care of Bradenton location"
@@ -1088,14 +1158,21 @@ function MapSection() {
                   className="h-full w-full border-0"
                 />
               </div>
-              <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-16"
-                style={{ background: "linear-gradient(to top, oklch(0.2 0.05 220 / 0.7), transparent)" }} />
+
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-16"
+                style={{
+                  background:
+                    "linear-gradient(to top, oklch(0.2 0.05 220 / 0.7), transparent)",
+                }}
+              />
+
               <div className="pointer-events-none absolute left-5 top-5 rounded-full bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-white backdrop-blur-[10px]">
                 Cortez Rd W
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </section>
@@ -1105,14 +1182,25 @@ function MapSection() {
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function ContactPage() {
+  const appointmentRef = useRef(null);
+
+  const handleBookAppointmentClick = () => {
+    if (!appointmentRef.current) return;
+
+    appointmentRef.current.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+
   return (
     <main
       style={{
         fontFamily: "var(--font-body, 'DM Sans', system-ui, sans-serif)",
       }}
     >
-      <ContactHero />
-      <ContactDetailsSection />
+      <ContactHero onBookAppointment={handleBookAppointmentClick} />
+      <ContactDetailsSection sectionRef={appointmentRef} />
       <MapSection />
     </main>
   );
