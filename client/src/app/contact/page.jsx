@@ -104,6 +104,47 @@ function InputBox({ focused, error, children }) {
 const inputClass =
   "min-w-0 w-full bg-transparent text-[13px] text-[#18120F] outline-none placeholder:text-[oklch(0.7_0.02_80)]";
 
+// ─── Builds the plain-text confirmation body sent to the patient ──────────────
+function buildConfirmationMessage(form) {
+  return `
+Hi ${form.firstName},
+
+Thank you for requesting an appointment with Women's Care of Bradenton. We have received your request and our team will contact you shortly to confirm your appointment.
+
+──────────────────────────────
+YOUR APPOINTMENT DETAILS
+──────────────────────────────
+
+New Patient     : ${form.newPatient}
+Full Name       : ${form.firstName} ${form.lastName}
+Phone           : ${form.phone}
+Email           : ${form.email}
+
+Preferred Date  : ${form.preferredDate}
+Preferred Time  : ${form.preferredTime}
+
+Insurance       : ${form.insurance}
+Gender          : ${form.gender}
+Date of Birth   : ${form.dob}
+
+──────────────────────────────
+
+If you need to make any changes or have questions, please call us at (941) 500-3100 or reply to this email.
+
+Office Hours:
+  Mon – Thu  :  8:00 AM – 5:00 PM
+  Friday     :  8:00 AM – 1:00 PM
+
+Women's Care of Bradenton
+4216 Cortez Rd W, Bradenton, FL 34210
+(941) 500-3100
+info@womenscarebradenton.com
+
+──────────────────────────────
+This is an automated confirmation. Please do not reply directly to this message for urgent matters — call us instead.
+`.trim();
+}
+
 function ContactForm() {
   const [form, setForm] = useState(INITIAL_FORM);
   const [errors, setErrors] = useState({});
@@ -119,7 +160,6 @@ function ContactForm() {
 
   const validate = () => {
     const next = {};
-
     if (!form.firstName.trim()) next.firstName = "First name is required.";
     if (!form.lastName.trim()) next.lastName = "Last name is required.";
     if (!form.phone.trim()) next.phone = "Phone number is required.";
@@ -132,7 +172,6 @@ function ContactForm() {
     if (!form.insurance.trim()) next.insurance = "Insurance is required.";
     if (!form.gender) next.gender = "Gender is required.";
     if (!form.dob) next.dob = "Date of birth is required.";
-
     return next;
   };
 
@@ -156,9 +195,19 @@ function ContactForm() {
         },
         body: JSON.stringify({
           access_key: ACCESS_KEY,
-          subject: `Appointment Request — ${form.firstName} ${form.lastName}`,
+
+          // ── Doctor receives this subject line ──────────────────────────
+          subject: `New Appointment Request — ${form.firstName} ${form.lastName}`,
           from_name: "Women's Care of Bradenton Website",
           botcheck: "",
+
+          // ── reply_to triggers Web3Forms auto-reply to the patient ──────
+          reply_to: form.email,
+
+          // ── message is what Web3Forms sends back to the patient ────────
+          message: buildConfirmationMessage(form),
+
+          // ── All fields — visible in the doctor's notification email ────
           "New Patient": form.newPatient,
           "First Name": form.firstName,
           "Last Name": form.lastName,
@@ -204,11 +253,7 @@ function ContactForm() {
             strokeWidth="2.2"
             style={{ color: "oklch(0.45 0.15 150)" }}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M5 13l4 4L19 7"
-            />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
         </div>
 
@@ -220,8 +265,8 @@ function ContactForm() {
             className="mt-2 max-w-[300px] text-[13px] leading-[1.8]"
             style={{ color: "#7A7068" }}
           >
-            Thank you for reaching out. Our team will review your appointment
-            request and contact you soon.
+            Thank you for reaching out. A confirmation has been sent to your
+            email. Our team will contact you shortly to confirm your appointment.
           </p>
         </div>
 
@@ -282,7 +327,9 @@ function ContactForm() {
               <button
                 key={option}
                 type="button"
-                onClick={() => setForm((prev) => ({ ...prev, newPatient: option }))}
+                onClick={() =>
+                  setForm((prev) => ({ ...prev, newPatient: option }))
+                }
                 className="rounded-2xl px-4 py-3 text-[13px] font-semibold transition-all duration-200"
                 style={{
                   background: active
@@ -470,11 +517,7 @@ function ContactForm() {
         >
           {status === "loading" ? (
             <>
-              <svg
-                className="h-4 w-4 animate-spin"
-                viewBox="0 0 24 24"
-                fill="none"
-              >
+              <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
                 <circle
                   className="opacity-25"
                   cx="12"
@@ -675,7 +718,8 @@ function ContactHero() {
             <h1
               className="contact-hero-heading max-w-[650px] overflow-hidden leading-[1.02] tracking-[-0.035em] text-[#18120F]"
               style={{
-                fontFamily: "var(--font-display, 'Playfair Display', Georgia, serif)",
+                fontFamily:
+                  "var(--font-display, 'Playfair Display', Georgia, serif)",
                 fontSize: "clamp(2.6rem, 5vw, 4.3rem)",
               }}
             >
