@@ -7,8 +7,6 @@ import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const ACCESS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_KEY;
-
 function GrainOverlay({ opacity = 0.03 }) {
   return (
     <div
@@ -49,6 +47,7 @@ const INITIAL_FORM = {
   insurance: "",
   gender: "",
   dob: "",
+  comments: "",
 };
 
 function FieldWrap({ label, required, error, children }) {
@@ -104,47 +103,6 @@ function InputBox({ focused, error, children }) {
 const inputClass =
   "min-w-0 w-full bg-transparent text-[13px] text-[#18120F] outline-none placeholder:text-[oklch(0.7_0.02_80)]";
 
-// ─── Builds the plain-text confirmation body sent to the patient ──────────────
-function buildConfirmationMessage(form) {
-  return `
-Hi ${form.firstName},
-
-Thank you for requesting an appointment with Women's Care of Bradenton. We have received your request and our team will contact you shortly to confirm your appointment.
-
-──────────────────────────────
-YOUR APPOINTMENT DETAILS
-──────────────────────────────
-
-New Patient     : ${form.newPatient}
-Full Name       : ${form.firstName} ${form.lastName}
-Phone           : ${form.phone}
-Email           : ${form.email}
-
-Preferred Date  : ${form.preferredDate}
-Preferred Time  : ${form.preferredTime}
-
-Insurance       : ${form.insurance}
-Gender          : ${form.gender}
-Date of Birth   : ${form.dob}
-
-──────────────────────────────
-
-If you need to make any changes or have questions, please call us at (941) 500-3100 or reply to this email.
-
-Office Hours:
-  Mon – Thu  :  8:00 AM – 5:00 PM
-  Friday     :  8:00 AM – 1:00 PM
-
-Women's Care of Bradenton
-4216 Cortez Rd W, Bradenton, FL 34210
-(941) 500-3100
-info@womenscarebradenton.com
-
-──────────────────────────────
-This is an automated confirmation. Please do not reply directly to this message for urgent matters — call us instead.
-`.trim();
-}
-
 function ContactForm() {
   const [form, setForm] = useState(INITIAL_FORM);
   const [errors, setErrors] = useState({});
@@ -187,43 +145,17 @@ function ContactForm() {
     setStatus("loading");
 
     try {
-      const response = await fetch("https://api.web3forms.com/submit", {
+      const response = await fetch("/api/appointment", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Accept: "application/json",
         },
-        body: JSON.stringify({
-          access_key: ACCESS_KEY,
-
-          // ── Doctor receives this subject line ──────────────────────────
-          subject: `New Appointment Request — ${form.firstName} ${form.lastName}`,
-          from_name: "Women's Care of Bradenton Website",
-          botcheck: "",
-
-          // ── reply_to triggers Web3Forms auto-reply to the patient ──────
-          reply_to: form.email,
-
-          // ── message is what Web3Forms sends back to the patient ────────
-          message: buildConfirmationMessage(form),
-
-          // ── All fields — visible in the doctor's notification email ────
-          "New Patient": form.newPatient,
-          "First Name": form.firstName,
-          "Last Name": form.lastName,
-          Phone: form.phone,
-          Email: form.email,
-          "Preferred Time": form.preferredTime,
-          "Select Date": form.preferredDate,
-          Insurance: form.insurance,
-          Gender: form.gender,
-          "Date of Birth": form.dob,
-        }),
+        body: JSON.stringify(form),
       });
 
       const data = await response.json();
 
-      if (data.success) {
+      if (response.ok && data.success) {
         setStatus("success");
         setForm(INITIAL_FORM);
         setErrors({});
@@ -503,6 +435,34 @@ function ContactForm() {
             className={inputClass}
           />
         </InputBox>
+      </FieldWrap>
+
+      <FieldWrap label="Comments">
+        <div
+          className="flex min-w-0 rounded-2xl px-3.5 py-2.5 transition-all duration-200"
+          style={{
+            background: "oklch(0.98 0.01 80)",
+            border: `1px solid ${
+              focused === "comments"
+                ? "oklch(0.52 0.12 320 / 0.6)"
+                : "oklch(0.9 0.02 80)"
+            }`,
+            boxShadow:
+              focused === "comments"
+                ? "0 0 0 3px oklch(0.52 0.12 320 / 0.1)"
+                : "none",
+          }}
+        >
+          <textarea
+            placeholder="Add any additional details..."
+            value={form.comments || ""}
+            onChange={set("comments")}
+            onFocus={() => setFocused("comments")}
+            onBlur={() => setFocused("")}
+            rows={5}
+            className="min-w-0 w-full resize-none bg-transparent text-[13px] text-[#18120F] outline-none placeholder:text-[oklch(0.7_0.02_80)]"
+          />
+        </div>
       </FieldWrap>
 
       <div className="flex flex-col gap-3 pt-1 md:gap-3 lg:flex-row lg:items-end lg:justify-between">
