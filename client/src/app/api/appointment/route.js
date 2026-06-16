@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const STAFF_TO_EMAIL = "godigigoit@gmail.com";
-const STAFF_BCC_EMAILS = ["jjothishankar@femwell.com","trilok@godigigo.com", "mcjothis@yahoo.com", "trilokchandar95@gmail.com"];
+const STAFF_BCC_EMAILS = ["jjothishankar@femwell.com","trilok@godigigo.com", "ajothivijayarani@femwell.com", "tkoch@femwell.com", "jarreaga@femwell.com", "v-nsanchez@femwell.com", "cgaray@femwell.com"];
 
 const FROM_EMAIL =
   "Women's Care of Bradenton <info@womenscareofbradenton.com>";
