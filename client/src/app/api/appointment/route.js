@@ -118,7 +118,7 @@ export async function POST(req) {
     const staffEmail = await resend.emails.send({
       from: FROM_EMAIL,
       to: STAFF_TO_EMAIL,
-      bcc: STAFF_BCC_EMAILS,
+      cc: STAFF_BCC_EMAILS,
       replyTo: form.email,
       subject: `New Appointment Request — ${form.firstName} ${form.lastName}`,
       html: `
