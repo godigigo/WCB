@@ -48,6 +48,7 @@ export async function POST(req) {
       insurance: normalize(body.insurance),
       gender: normalize(body.gender),
       dob: normalize(body.dob),
+      comments: normalize(body.comments || ""),
     };
 
     if (!form.firstName) {
@@ -115,6 +116,14 @@ export async function POST(req) {
 
     console.log("Sending appointment form:", form);
 
+    const commentsRowHtml = form.comments
+      ? `
+            <tr>
+              <td style="padding:10px 12px;color:#666;vertical-align:top;">Additional Comments</td>
+              <td style="padding:10px 12px;white-space:pre-wrap;">${form.comments}</td>
+            </tr>`
+      : "";
+
     const staffEmail = await resend.emails.send({
       from: FROM_EMAIL,
       to: STAFF_TO_EMAIL,
@@ -161,7 +170,7 @@ export async function POST(req) {
             <tr style="background:#f9f9f9;">
               <td style="padding:10px 12px;color:#666;">Date of Birth</td>
               <td style="padding:10px 12px;">${form.dob}</td>
-            </tr>
+            </tr>${commentsRowHtml}
           </table>
 
           <p style="color:#999;font-size:12px;margin-top:24px;">
@@ -183,6 +192,16 @@ export async function POST(req) {
       );
     }
 
+    const patientCommentsHtml = form.comments
+      ? `
+          <div style="background:#f9f5f1;border-radius:12px;padding:16px 20px;margin:0 0 24px 0;">
+            <p style="margin:0;font-size:14px;color:#555;">
+              <strong>Your Notes:</strong><br />
+              ${form.comments.replace(/\n/g, "<br />")}
+            </p>
+          </div>`
+      : "";
+
     const patientEmail = await resend.emails.send({
       from: FROM_EMAIL,
       to: form.email,
@@ -202,6 +221,7 @@ export async function POST(req) {
               <strong>Preferred Time:</strong> ${form.preferredTime}
             </p>
           </div>
+          ${patientCommentsHtml}
 
           <hr style="border:none;border-top:1px solid #eee;margin:24px 0;" />
 
