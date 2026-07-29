@@ -1,4 +1,5 @@
 import { Outfit, Fraunces } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -47,11 +48,22 @@ export default function RootLayout({ children }) {
     >
       <body className="min-h-full flex flex-col bg-beige text-foreground font-sans">
         <Navbar />
-        <main className="flex-1">
-          {children}
-        </main>
+        <main className="flex-1">{children}</main>
         <Footer />
       </body>
+
+      <Script
+        src="https://www.googletagmanager.com/gtag/js?id=G-ZFQH4NN9WS"
+        strategy="afterInteractive"
+      />
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-ZFQH4NN9WS');
+        `}
+      </Script>
     </html>
   );
 }
