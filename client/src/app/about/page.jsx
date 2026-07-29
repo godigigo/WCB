@@ -125,12 +125,12 @@ const teamMembers = [
     role: "Advanced Practice Registered Nurse",
   },
   {
-    image: "/team/team-3.png",
+    image: "/team/team-4.jpeg",
     name: "Lorraine Gabbard",
     role: "Nurse Practitioner",
   },
   {
-    image: "/team/team-4.jpeg",
+    image: "/team/team-3.png",
     name: "Veronica Celis, MSN, APRN, FNP-C",
     role: "Family Nurse Practitioner",
   },
