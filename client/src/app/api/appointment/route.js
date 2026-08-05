@@ -3,12 +3,25 @@ import { NextResponse } from "next/server";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+// Staff notification targets
 const STAFF_TO_EMAIL = "godigigoit@gmail.com";
-const STAFF_BCC_EMAILS = ["jjothishankar@femwell.com","trilok@godigigo.com", "ajothivijayarani@femwell.com", "tkoch@femwell.com", "jarreaga@femwell.com", "v-nsanchez@femwell.com", "cgaray@femwell.com"];
+const STAFF_BCC_EMAILS = [
+  "jjothishankar@femwell.com",
+  "trilok@godigigo.com",
+  "ajothivijayarani@femwell.com",
+  "tkoch@femwell.com",
+  "jarreaga@femwell.com",
+  "v-nsanchez@femwell.com",
+  "cgaray@femwell.com",
+];
 
 const FROM_EMAIL =
   "Women's Care of Bradenton <info@womenscareofbradenton.com>";
 
+// Allowed hosts for Origin/Referer checks (production)
+const ALLOWED_HOSTS = ["womenscareofbradenton.com"];
+
+// Basic HTML escaping to avoid injection in email HTML
 function escapeHtml(value = "") {
   return String(value)
     .replace(/&/g, "&amp;")
@@ -18,15 +31,116 @@ function escapeHtml(value = "") {
     .replace(/'/g, "&#039;");
 }
 
-function normalize(value = "") {
-  return escapeHtml(String(value).trim());
+// Normalize + length limit per field
+function normalize(value = "", maxLen = 256) {
+  return escapeHtml(String(value).trim().slice(0, maxLen));
 }
 
 function isValidEmail(email = "") {
+  // Simple allowlist-style email syntax check
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-export async function POST(req) {
+function isValidName(name: string) {
+  if (!name) return false;
+  const len = name.length;
+  if (len < 2 || len > 64) return false;
+  // Letters, spaces, hyphen, apostrophe only
+  if (!/^[a-zA-Z\s'-]+$/.test(name)) return false;
+  // Require at least one vowel to avoid obvious random strings
+  if (!/[aeiouAEIOU]/.test(name)) return false;
+  // Avoid names with unusually high uppercase ratio (random tokens)
+  const upperMatches = name.match(/[A-Z]/g) || [];
+  const upperRatio = upperMatches.length / len;
+  if (upperMatches.length > 3 && upperRatio > 0.35) return false;
+  return true;
+}
+
+function normalizePhone(phone: string) {
+  const digits = phone.replace(/\D/g, "");
+  // US-like phone numbers typically between 7 and 15 digits
+  if (digits.length < 7 || digits.length > 15) return "";
+  return digits;
+}
+
+function isValidPreferredTime(time: string) {
+  const allowed = ["Morning", "Afternoon", "Evening", "First available"];
+  return allowed.includes(time);
+}
+
+function isValidGender(gender: string) {
+  const allowed = ["Female", "Male", "Non-binary", "Prefer not to say"];
+  return allowed.includes(gender);
+}
+
+function isValidDate(value: string) {
+  if (!value) return false;
+  // Expect ISO date string: YYYY-MM-DD
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return false;
+  // Reject obviously absurd dates (far future or very old)
+  const year = date.getUTCFullYear();
+  if (year < 1900 || year > 2100) return false;
+  return true;
+}
+
+// Simple heuristic to flag obviously random-ish insurance names
+function isSuspiciousInsurance(insurance: string) {
+  const len = insurance.length;
+  if (!insurance) return false;
+  // Too long, single "word" with no space is suspicious
+  if (len > 24 && !/\s/.test(insurance)) return true;
+  // Many mixed-case segments with no spaces
+  const upper = insurance.match(/[A-Z]/g) || [];
+  const lower = insurance.match(/[a-z]/g) || [];
+  if (upper.length > 5 && lower.length > 5 && !/\s/.test(insurance)) {
+    return true;
+  }
+  return false;
+}
+
+// Simple form-level spam heuristic; we keep it conservative
+function isSuspiciousForm(form: {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  email: string;
+  preferredTime: string;
+  preferredDate: string;
+  insurance: string;
+  gender: string;
+  dob: string;
+  comments: string;
+}) {
+  let score = 0;
+
+  // Names failing our stricter name rules
+  if (!isValidName(form.firstName)) score += 2;
+  if (!isValidName(form.lastName)) score += 2;
+
+  // Suspicious insurance tokens
+  if (isSuspiciousInsurance(form.insurance)) score += 2;
+
+  // Phone missing or invalid
+  if (!normalizePhone(form.phone)) score += 1;
+
+  // Excessively short or noisy comments
+  if (form.comments && form.comments.length < 5 && !/\s/.test(form.comments)) {
+    score += 1;
+  }
+
+  // If multiple signals add up, treat as spam
+  return score >= 3;
+}
+
+// Optional honeypot field check: if filled, treat as bot
+function isHoneypotTripped(honeypotValue: string | undefined) {
+  if (!honeypotValue) return false;
+  return honeypotValue.trim().length > 0;
+}
+
+export async function POST(req: Request) {
   try {
     if (!process.env.RESEND_API_KEY) {
       return NextResponse.json(
@@ -35,39 +149,96 @@ export async function POST(req) {
       );
     }
 
+    const isDev = process.env.NODE_ENV !== "production";
+
+    // Basic Origin / Referer allowlist check to reduce cross-site abuse
+    const headers = req.headers;
+    const origin = headers.get("origin") || "";
+    const referer = headers.get("referer") || "";
+    const userAgent = headers.get("user-agent") || "";
+
+    if (!isDev) {
+      const hasAllowedOrigin = ALLOWED_HOSTS.some((host) =>
+        origin.includes(host)
+      );
+      const hasAllowedReferer = ALLOWED_HOSTS.some((host) =>
+        referer.includes(host)
+      );
+
+      if (!hasAllowedOrigin && !hasAllowedReferer) {
+        console.warn("Blocked appointment request: invalid origin/referrer", {
+          origin,
+          referer,
+        });
+        return NextResponse.json(
+          { success: false, error: "Invalid request origin." },
+          { status: 400 }
+        );
+      }
+    }
+
+    // Enforce JSON payload and reject huge bodies
+    const contentType = headers.get("content-type") || "";
+    if (!contentType.includes("application/json")) {
+      return NextResponse.json(
+        { success: false, error: "Invalid content type." },
+        { status: 400 }
+      );
+    }
+
     const body = await req.json();
 
+    // Honeypot field: add a hidden input like <input name="website" style="display:none" />
+    if (isHoneypotTripped(body.website || body.url || body.homepage)) {
+      console.warn("Blocked appointment request via honeypot field", {
+        origin,
+        referer,
+        userAgent,
+      });
+      return NextResponse.json(
+        { success: false, error: "Unable to process this request." },
+        { status: 400 }
+      );
+    }
+
+    // Normalize with field-specific length limits
     const form = {
-      newPatient: normalize(body.newPatient || "Yes"),
-      firstName: normalize(body.firstName),
-      lastName: normalize(body.lastName),
-      phone: normalize(body.phone),
-      email: normalize(body.email).toLowerCase(),
-      preferredTime: normalize(body.preferredTime),
-      preferredDate: normalize(body.preferredDate),
-      insurance: normalize(body.insurance),
-      gender: normalize(body.gender),
-      dob: normalize(body.dob),
-      comments: normalize(body.comments || ""),
+      newPatient: normalize(body.newPatient || "Yes", 8),
+      firstName: normalize(body.firstName, 64),
+      lastName: normalize(body.lastName, 64),
+      phone: normalize(body.phone, 32),
+      email: normalize(String(body.email || "").toLowerCase(), 128),
+      preferredTime: normalize(body.preferredTime, 32),
+      preferredDate: normalize(body.preferredDate, 32),
+      insurance: normalize(body.insurance, 64),
+      gender: normalize(body.gender, 32),
+      dob: normalize(body.dob, 32),
+      comments: normalize(body.comments || "", 1024),
     };
 
-    if (!form.firstName) {
+    // Strict allowlist-style validation for all structured fields
+    if (!form.firstName || !isValidName(form.firstName)) {
       return NextResponse.json(
-        { success: false, error: "First name is required." },
+        { success: false, error: "First name is required and must be valid." },
         { status: 400 }
       );
     }
 
-    if (!form.lastName) {
+    if (!form.lastName || !isValidName(form.lastName)) {
       return NextResponse.json(
-        { success: false, error: "Last name is required." },
+        { success: false, error: "Last name is required and must be valid." },
         { status: 400 }
       );
     }
 
-    if (!form.phone) {
+    const normalizedPhone = normalizePhone(form.phone);
+    if (!normalizedPhone) {
       return NextResponse.json(
-        { success: false, error: "Phone number is required." },
+        {
+          success: false,
+          error:
+            "Phone number is required and must contain a valid amount of digits.",
+        },
         { status: 400 }
       );
     }
@@ -79,16 +250,22 @@ export async function POST(req) {
       );
     }
 
-    if (!form.preferredTime) {
+    if (!form.preferredTime || !isValidPreferredTime(form.preferredTime)) {
       return NextResponse.json(
-        { success: false, error: "Preferred time is required." },
+        {
+          success: false,
+          error: "Preferred time is required and must be one of the options.",
+        },
         { status: 400 }
       );
     }
 
-    if (!form.preferredDate) {
+    if (!form.preferredDate || !isValidDate(form.preferredDate)) {
       return NextResponse.json(
-        { success: false, error: "Preferred date is required." },
+        {
+          success: false,
+          error: "Preferred date is required and must be a valid date.",
+        },
         { status: 400 }
       );
     }
@@ -100,21 +277,50 @@ export async function POST(req) {
       );
     }
 
-    if (!form.gender) {
+    if (!form.gender || !isValidGender(form.gender)) {
       return NextResponse.json(
-        { success: false, error: "Gender is required." },
+        {
+          success: false,
+          error: "Gender is required and must be one of the options.",
+        },
         { status: 400 }
       );
     }
 
-    if (!form.dob) {
+    if (!form.dob || !isValidDate(form.dob)) {
       return NextResponse.json(
-        { success: false, error: "Date of birth is required." },
+        {
+          success: false,
+          error: "Date of birth is required and must be a valid date.",
+        },
         { status: 400 }
       );
     }
 
-    console.log("Sending appointment form:", form);
+    // Simple spam heuristic: block obviously fake/random submissions
+    if (isSuspiciousForm(form)) {
+      console.warn("Blocked suspicious appointment form", {
+        form,
+        origin,
+        referer,
+        userAgent,
+      });
+      // Return a generic error to bots; do not send any email
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Unable to process this request.",
+        },
+        { status: 400 }
+      );
+    }
+
+    console.log("Sending appointment form:", {
+      form,
+      origin,
+      referer,
+      userAgent,
+    });
 
     const commentsRowHtml = form.comments
       ? `
@@ -145,7 +351,7 @@ export async function POST(req) {
             </tr>
             <tr style="background:#f9f9f9;">
               <td style="padding:10px 12px;color:#666;">Phone</td>
-              <td style="padding:10px 12px;">${form.phone}</td>
+              <td style="padding:10px 12px;">${normalizedPhone}</td>
             </tr>
             <tr>
               <td style="padding:10px 12px;color:#666;">Email</td>
@@ -253,7 +459,7 @@ export async function POST(req) {
       staffEmailId: staffEmail?.data?.id || staffEmail?.id || null,
       patientEmailId: patientEmail?.data?.id || patientEmail?.id || null,
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Appointment email error:", error);
 
     return NextResponse.json(
