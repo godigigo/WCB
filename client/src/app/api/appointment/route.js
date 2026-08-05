@@ -41,7 +41,7 @@ function isValidEmail(email = "") {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-function isValidName(name: string) {
+function isValidName(name) {
   if (!name) return false;
   const len = name.length;
   if (len < 2 || len > 64) return false;
@@ -56,24 +56,24 @@ function isValidName(name: string) {
   return true;
 }
 
-function normalizePhone(phone: string) {
+function normalizePhone(phone) {
   const digits = phone.replace(/\D/g, "");
   // US-like phone numbers typically between 7 and 15 digits
   if (digits.length < 7 || digits.length > 15) return "";
   return digits;
 }
 
-function isValidPreferredTime(time: string) {
+function isValidPreferredTime(time) {
   const allowed = ["Morning", "Afternoon", "Evening", "First available"];
   return allowed.includes(time);
 }
 
-function isValidGender(gender: string) {
+function isValidGender(gender) {
   const allowed = ["Female", "Male", "Non-binary", "Prefer not to say"];
   return allowed.includes(gender);
 }
 
-function isValidDate(value: string) {
+function isValidDate(value) {
   if (!value) return false;
   // Expect ISO date string: YYYY-MM-DD
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
@@ -86,7 +86,7 @@ function isValidDate(value: string) {
 }
 
 // Simple heuristic to flag obviously random-ish insurance names
-function isSuspiciousInsurance(insurance: string) {
+function isSuspiciousInsurance(insurance) {
   const len = insurance.length;
   if (!insurance) return false;
   // Too long, single "word" with no space is suspicious
@@ -101,18 +101,7 @@ function isSuspiciousInsurance(insurance: string) {
 }
 
 // Simple form-level spam heuristic; we keep it conservative
-function isSuspiciousForm(form: {
-  firstName: string;
-  lastName: string;
-  phone: string;
-  email: string;
-  preferredTime: string;
-  preferredDate: string;
-  insurance: string;
-  gender: string;
-  dob: string;
-  comments: string;
-}) {
+function isSuspiciousForm(form) {
   let score = 0;
 
   // Names failing our stricter name rules
@@ -135,12 +124,12 @@ function isSuspiciousForm(form: {
 }
 
 // Optional honeypot field check: if filled, treat as bot
-function isHoneypotTripped(honeypotValue: string | undefined) {
+function isHoneypotTripped(honeypotValue) {
   if (!honeypotValue) return false;
   return honeypotValue.trim().length > 0;
 }
 
-export async function POST(req: Request) {
+export async function POST(req) {
   try {
     if (!process.env.RESEND_API_KEY) {
       return NextResponse.json(
@@ -459,7 +448,7 @@ export async function POST(req: Request) {
       staffEmailId: staffEmail?.data?.id || staffEmail?.id || null,
       patientEmailId: patientEmail?.data?.id || patientEmail?.id || null,
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error("Appointment email error:", error);
 
     return NextResponse.json(
