@@ -6,10 +6,10 @@ import Link from "next/link";
 import Button from "@/components/ui/Button";
 
 const services = [
-  { label: "Gynecology",                 href: "/services/gynecology",                 external: false },
-  { label: "Well-Woman Exams",           href: "/services/well-woman-exams",           external: false },
+  { label: "Gynecology", href: "/services/gynecology", external: false },
+  { label: "Well-Woman Exams", href: "/services/well-woman-exams", external: false },
   { label: "Minimally Invasive Surgery", href: "/services/minimally-invasive-surgery", external: false },
-  { label: "Infertility",                href: "/services/infertility",                external: false },
+  { label: "Infertility", href: "/services/infertility", external: false },
 ];
 
 const patientResources = [
@@ -255,6 +255,13 @@ export default function Navbar() {
                 </Link>
               </li>
 
+              {/* Pay My Bills - standalone link */}
+              <li>
+                <Link href="/pay" className="hover:text-primary transition-colors">
+                  Pay My Bills
+                </Link>
+              </li>
+
               {/* Patient Info dropdown */}
               <li ref={patientRef} className="relative">
                 <button
@@ -414,6 +421,27 @@ export default function Navbar() {
                 className="hover:text-primary transition-colors"
               >
                 About
+              </Link>
+            </li>
+
+            <li>
+              <Link
+                href="/team"
+                onClick={() => setMobileOpen(false)}
+                className="hover:text-primary transition-colors"
+              >
+                Team
+              </Link>
+            </li>
+
+            {/* Pay My Bills - mobile standalone link */}
+            <li>
+              <Link
+                href="/pay"
+                onClick={() => setMobileOpen(false)}
+                className="hover:text-primary transition-colors"
+              >
+                Pay My Bills
               </Link>
             </li>
 
