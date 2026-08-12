@@ -126,7 +126,6 @@ const MEMBERS = [
       "13+ years of bedside nursing experience",
       "8+ years in labor & delivery and OB triage",
       "Specialisation in family practice & gynecologic care",
-      "Bilingual — English & Spanish",
     ],
     bio: [
       "Veronica Celis, MSN, APRN, FNP-C, is a Family Nurse Practitioner with a strong background in women's health and over 13 years of bedside nursing experience. She earned her Master of Science in Nursing from the University of South Alabama, graduating with honors in 2025 with a specialization in family practice. She also holds a Bachelor of Science in Nursing from the University of Central Florida.",
