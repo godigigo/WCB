@@ -1,5 +1,6 @@
 import { Outfit, Fraunces } from "next/font/google";
 import Script from "next/script";
+import { GoogleTagManager } from "@next/third-parties/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -52,10 +53,15 @@ export default function RootLayout({ children }) {
         <Footer />
       </body>
 
+      {/* Google Tag Manager */}
+      <GoogleTagManager gtmId="GTM-KM2HQXFX" />
+
+      {/* Existing Google Analytics */}
       <Script
         src="https://www.googletagmanager.com/gtag/js?id=G-ZFQH4NN9WS"
         strategy="afterInteractive"
       />
+
       <Script id="google-analytics" strategy="afterInteractive">
         {`
           window.dataLayer = window.dataLayer || [];
