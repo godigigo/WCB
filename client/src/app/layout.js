@@ -1,6 +1,7 @@
 import { Outfit, Fraunces } from "next/font/google";
 import Script from "next/script";
 import { GoogleTagManager } from "@next/third-parties/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -51,6 +52,7 @@ export default function RootLayout({ children }) {
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />
+        <Analytics />
       </body>
 
       {/* Google Tag Manager */}
