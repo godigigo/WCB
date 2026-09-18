@@ -20,24 +20,114 @@ const fraunces = Fraunces({
   style: ["normal", "italic"],
 });
 
+/* =========================
+   SEO METADATA
+========================= */
+
 export const metadata = {
-  title: "Women's Care of Bradenton | Compassionate Women's Healthcare",
+  metadataBase: new URL("https://www.womenscareofbradenton.com"),
+
+  title: {
+    default:
+      "Women's Care of Bradenton | Women's Healthcare in Bradenton, FL",
+    template: "%s | Women's Care of Bradenton",
+  },
+
   description:
-    "A lifetime of compassionate care for women in Bradenton, Florida. Board-certified expertise in family practice and gynecology since 2018.",
+    "Women's Care of Bradenton provides compassionate women's healthcare, gynecology, well-woman exams, infertility care, and family practice in Bradenton, Florida.",
+
   keywords: [
-    "women's healthcare",
-    "gynecology",
-    "Bradenton Florida",
-    "well woman exams",
-    "infertility support",
-    "family practice",
+    "women's healthcare Bradenton",
+    "women's health Bradenton FL",
+    "gynecologist Bradenton FL",
+    "OB GYN Bradenton",
+    "gynecology Bradenton",
+    "well woman exam Bradenton",
+    "women's health clinic Bradenton",
+    "infertility care Bradenton",
+    "menopause care Bradenton",
+    "family practice Bradenton",
   ],
-  authors: [{ name: "Women's Care of Bradenton" }],
+
+  authors: [
+    {
+      name: "Women's Care of Bradenton",
+    },
+  ],
+
+  creator: "Women's Care of Bradenton",
+  publisher: "Women's Care of Bradenton",
+
+  /* Canonical URL */
+  alternates: {
+    canonical: "https://www.womenscareofbradenton.com/",
+  },
+
+  /* Search engine crawling */
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+
+  /* Open Graph */
   openGraph: {
-    title: "Women's Care of Bradenton",
+    title:
+      "Women's Care of Bradenton | Women's Healthcare in Bradenton, FL",
+
     description:
-      "A lifetime of compassionate care for women in Bradenton, Florida.",
+      "Compassionate women's healthcare, gynecology, well-woman exams, infertility care, and family practice in Bradenton, Florida.",
+
+    url: "https://www.womenscareofbradenton.com/",
+
+    siteName: "Women's Care of Bradenton",
+
+    locale: "en_US",
+
     type: "website",
+  },
+
+  /* Twitter / X */
+  twitter: {
+    card: "summary",
+
+    title:
+      "Women's Care of Bradenton | Women's Healthcare in Bradenton, FL",
+
+    description:
+      "Compassionate women's healthcare and gynecology in Bradenton, Florida.",
+  },
+
+  category: "healthcare",
+};
+
+/* =========================
+   STRUCTURED DATA
+========================= */
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "MedicalClinic",
+
+  name: "Women's Care of Bradenton",
+
+  url: "https://www.womenscareofbradenton.com/",
+
+  telephone: "+1-941-500-3100",
+
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "4216 Cortez Rd W",
+    addressLocality: "Bradenton",
+    addressRegion: "FL",
+    postalCode: "34210",
+    addressCountry: "US",
   },
 };
 
@@ -48,13 +138,28 @@ export default function RootLayout({ children }) {
       className={`${outfit.variable} ${fraunces.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-beige text-foreground font-sans">
+
+        {/* Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(structuredData),
+          }}
+        />
+
         <Navbar />
+
         <main className="flex-1">{children}</main>
+
         <Footer />
+
         <Analytics />
       </body>
 
-      {/* Google Tag Manager */}
+      {/* =========================
+          GOOGLE TAG MANAGER
+      ========================= */}
+
       <Script id="google-tag-manager" strategy="afterInteractive">
         {`
           (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -65,7 +170,10 @@ export default function RootLayout({ children }) {
         `}
       </Script>
 
-      {/* Existing Google Analytics */}
+      {/* =========================
+          GOOGLE ANALYTICS
+      ========================= */}
+
       <Script
         src="https://www.googletagmanager.com/gtag/js?id=G-6ZB6EGYTN1"
         strategy="afterInteractive"
@@ -74,8 +182,13 @@ export default function RootLayout({ children }) {
       <Script id="google-analytics" strategy="afterInteractive">
         {`
           window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
+
+          function gtag(){
+            dataLayer.push(arguments);
+          }
+
           gtag('js', new Date());
+
           gtag('config', 'G-6ZB6EGYTN1');
         `}
       </Script>
