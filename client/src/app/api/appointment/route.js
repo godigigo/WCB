@@ -1,7 +1,9 @@
 import { Resend } from "resend";
 import { NextResponse } from "next/server";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = process.env.RESEND_API_KEY
+  ? new Resend(process.env.RESEND_API_KEY)
+  : null;
 
 // Staff notification targets
 const STAFF_TO_EMAIL = "godigigoit@gmail.com";
@@ -131,7 +133,7 @@ function isHoneypotTripped(honeypotValue) {
 
 export async function POST(req) {
   try {
-    if (!process.env.RESEND_API_KEY) {
+    if (!resend || !process.env.RESEND_API_KEY) {
       return NextResponse.json(
         { success: false, error: "Missing RESEND_API_KEY" },
         { status: 500 }
