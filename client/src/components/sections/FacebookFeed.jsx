@@ -22,11 +22,32 @@ const CARD_H = 568;
 const CARD_GAP = 20;
 
 function EmbedCard({ href }) {
+  const [shouldLoad, setShouldLoad] = useState(false);
+  const cardRef = useRef(null);
   const encodedUrl = encodeURIComponent(href);
   const embedSrc = `https://www.facebook.com/plugins/video.php?href=${encodedUrl}&show_text=false&width=${CARD_W}&height=${CARD_H}&appId`;
 
+  useEffect(() => {
+    const node = cardRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShouldLoad(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "220px 0px" }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div
+      ref={cardRef}
       className="fb-post-card group relative shrink-0 overflow-hidden transition-all duration-500 hover:-translate-y-2"
       style={{
         width: `${CARD_W}px`,
@@ -40,29 +61,47 @@ function EmbedCard({ href }) {
         WebkitBackdropFilter: "blur(20px)",
       }}
     >
-      <iframe
-        src={embedSrc}
-        width={CARD_W}
-        height={CARD_H}
-        style={{
-          border: "none",
-          overflow: "hidden",
-          borderRadius: "24px",
-          display: "block",
-          pointerEvents: "auto",
-        }}
-        scrolling="no"
-        frameBorder="0"
-        allowFullScreen
-        allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-        title="Facebook reel"
-        loading="lazy"
-      />
-      {/* Hover ring */}
-      <div
-        className="pointer-events-none absolute inset-0 rounded-[24px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-        style={{ boxShadow: "inset 0 0 0 1.5px oklch(0.58 0.1 320 / 0.28)" }}
-      />
+      {shouldLoad ? (
+        <>
+          <iframe
+            src={embedSrc}
+            width={CARD_W}
+            height={CARD_H}
+            style={{
+              border: "none",
+              overflow: "hidden",
+              borderRadius: "24px",
+              display: "block",
+              pointerEvents: "auto",
+            }}
+            scrolling="no"
+            frameBorder="0"
+            allowFullScreen
+            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+            title="Facebook reel"
+            loading="lazy"
+          />
+          <div
+            className="pointer-events-none absolute inset-0 rounded-[24px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+            style={{ boxShadow: "inset 0 0 0 1.5px oklch(0.58 0.1 320 / 0.28)" }}
+          />
+        </>
+      ) : (
+        <div
+          className="flex h-full w-full items-center justify-center text-center"
+          style={{
+            background:
+              "linear-gradient(135deg, rgba(255,255,255,0.95), rgba(246,232,240,0.82))",
+            color: "oklch(0.42 0.12 320)",
+            fontSize: "12px",
+            letterSpacing: "0.14em",
+            textTransform: "uppercase",
+            fontWeight: 700,
+          }}
+        >
+          Loading reel
+        </div>
+      )}
     </div>
   );
 }
@@ -75,17 +114,6 @@ export default function FacebookFeed() {
   const startX      = useRef(0);
   const scrollStart = useRef(0);
   const [activeIdx, setActiveIdx] = useState(0);
-
-  // Facebook SDK
-  useEffect(() => {
-    if (document.getElementById("facebook-jssdk")) return;
-    const s = document.createElement("script");
-    s.id = "facebook-jssdk";
-    s.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v25.0";
-    s.async = true;
-    s.defer = true;
-    document.body.appendChild(s);
-  }, []);
 
   // Sync active dot to scroll position
   useEffect(() => {
